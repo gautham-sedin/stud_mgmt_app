@@ -1,6 +1,17 @@
 <% flash.each do |type, message| %>
 
-    <div class="alert alert-<%= type == "notice" ? "success" : "danger" %> alert-dismissible fade show" role="alert">
+    <% bootstrap_class =
+        case type
+        when "notice"
+            "success"
+        when "alert"
+            "danger"
+        else
+            "info"
+        end
+    %>
+
+    <div class="alert alert-<%= bootstrap_class %> alert-dismissible fade show shadow-sm" role="alert">
         <%= message %>
 
         <button
