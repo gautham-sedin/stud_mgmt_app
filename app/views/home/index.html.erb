@@ -1,16 +1,265 @@
-<div class="row align-items-center py-5">
-    <div class="col-lg-6">
-        <h1 class="display-5 fw-bold text-dark">
-            Student Management Application
-        </h1>
+<div class="d-flex justify-content-between align-items-center mb-5">
 
-        <p class="lead text-secondary mt-3">
-            Manage student records efficiently with clean and modern Rails application.
+  <div>
+    <h1 class="fw-bold mb-1">
+      Dashboard
+    </h1>
+
+    <p class="text-secondary mb-0">
+      Student Management Analytics Overview
+    </p>
+  </div>
+
+  <%= link_to "Add Student",
+      new_student_path,
+      class: "btn btn-dark" %>
+
+</div>
+
+
+
+<div class="row g-4 mb-5">
+
+  <div class="col-md-6 col-xl-3">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+
+        <p class="text-secondary mb-2">
+          Total Students
         </p>
 
-        <div>
-            <%= link_to "View Students", students_path, class: "btn btn-dark btn-md me-3" %>
-            <%= link_to "Add Student", new_student_path, class: "btn btn-outline-dark btn-md" %>
-        </div> 
+        <h2 class="fw-bold">
+          <%= @total_students %>
+        </h2>
+
+      </div>
     </div>
+
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+
+        <p class="text-secondary mb-2">
+          Ruby Students
+        </p>
+
+        <h2 class="fw-bold">
+          <%= @ruby_students %>
+        </h2>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+
+        <p class="text-secondary mb-2">
+          Rails Students
+        </p>
+
+        <h2 class="fw-bold">
+          <%= @rails_students %>
+        </h2>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+
+        <p class="text-secondary mb-2">
+          React Students
+        </p>
+
+        <h2 class="fw-bold">
+          <%= @react_students %>
+        </h2>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="row g-4 mb-5">
+
+  <div class="col-md-6">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+
+        <p class="text-secondary mb-2">
+          Java Students
+        </p>
+
+        <h2 class="fw-bold">
+          <%= @java_students %>
+        </h2>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-md-6">
+
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body d-flex flex-column justify-content-center">
+
+        <h5 class="fw-bold mb-3">
+          Quick Actions
+        </h5>
+
+        <div class="d-flex flex-wrap gap-3">
+
+          <%= link_to "View Students",
+              students_path,
+              class: "btn btn-outline-dark" %>
+
+          <%= link_to "Add Student",
+              new_student_path,
+              class: "btn btn-dark" %>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="card border-0 shadow-sm">
+
+  <div class="card-body">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+      <div>
+        <h4 class="fw-bold mb-1">
+          Recent Students
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Latest added student records
+        </p>
+      </div>
+
+      <%= link_to "View All",
+          students_path,
+          class: "btn btn-outline-dark btn-sm" %>
+
+    </div>
+
+
+    <% if @recent_students.any? %>
+
+      <div class="table-responsive">
+
+        <table class="table align-middle">
+
+          <thead class="table-light">
+
+            <tr>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Marks</th>
+              <th>Result</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <% @recent_students.each do |student| %>
+
+              <tr>
+
+                <td class="fw-semibold">
+                  <%= student.name %>
+                </td>
+
+                <td>
+                  <span class="badge bg-dark">
+                    <%= student.course %>
+                  </span>
+                </td>
+
+                <td>
+                  <%= student.marks || "N/A" %>
+                </td>
+
+                <td>
+
+                  <% if student.result == "Pass" %>
+
+                    <span class="badge bg-success">
+                      Pass
+                    </span>
+
+                  <% elsif student.result == "Fail" %>
+
+                    <span class="badge bg-danger">
+                      Fail
+                    </span>
+
+                  <% else %>
+
+                    <span class="badge bg-secondary">
+                      N/A
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    <% else %>
+
+      <div class="text-center py-4">
+
+        <h5 class="fw-bold">
+          No Students Available
+        </h5>
+
+        <p class="text-secondary">
+          Add students to view analytics.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
 </div>
