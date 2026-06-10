@@ -1,0 +1,123 @@
+<div class="card shadow-sm border-0">
+
+  <div class="card-body p-4">
+
+    <% if @student.errors.any? %>
+
+      <div class="alert alert-danger">
+
+        <h5 class="fw-bold">
+          Please fix the following errors:
+        </h5>
+
+        <ul class="mb-0 mt-3">
+
+          <% @student.errors.full_messages.each do |message| %>
+
+            <li>
+              <%= message %>
+            </li>
+
+          <% end %>
+
+        </ul>
+
+      </div>
+
+    <% end %>
+
+
+    <%= form_with model: @student, local: true do |form| %>
+
+      <div class="row">
+
+        <div class="col-md-6 mb-4">
+
+          <%= form.label :name,
+                class: "form-label fw-semibold" %>
+
+          <%= form.text_field :name,
+                class: "form-control",
+                placeholder: "Enter student name" %>
+
+        </div>
+
+
+        <div class="col-md-6 mb-4">
+
+          <%= form.label :email,
+                class: "form-label fw-semibold" %>
+
+          <%= form.email_field :email,
+                class: "form-control",
+                placeholder: "Enter email address" %>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+
+          <%= form.label :age,
+                class: "form-label fw-semibold" %>
+
+          <%= form.number_field :age,
+                class: "form-control",
+                placeholder: "Age" %>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+
+          <%= form.label :course,
+                class: "form-label fw-semibold" %>
+
+          <%= form.select :course,
+                ["Ruby", "Rails", "React", "Java"],
+                { prompt: "Select Course" },
+                class: "form-select" %>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+
+          <%= form.label :marks,
+                class: "form-label fw-semibold" %>
+
+          <%= form.number_field :marks,
+                class: "form-control",
+                placeholder: "Marks" %>
+
+        </div>
+
+
+        <div class="col-12 mb-4">
+
+          <%= form.label :city,
+                class: "form-label fw-semibold" %>
+
+          <%= form.text_field :city,
+                class: "form-control",
+                placeholder: "Enter city name" %>
+
+        </div>
+
+      </div>
+
+
+      <div class="d-flex gap-3">
+
+        <%= form.submit class: "btn btn-dark px-4" %>
+
+        <%= link_to "Back",
+            students_path,
+            class: "btn btn-outline-secondary" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

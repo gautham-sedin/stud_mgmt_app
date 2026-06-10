@@ -8,6 +8,20 @@ class StudentsController < ApplicationController
 
   def index
     @students = Student.all
+
+    if(params[:search].present?)
+      @students = @students.where(
+        "name LIKE ? OR email LIKE ?",
+        "%#{params[:search]}%",
+        "%#{params[:search]}%"
+      )
+    end
+
+    if params[:course].present?
+      @students = @students.where(course: params[:course])
+    end
+
+    @students = @students.order(created_at: :desc)
   end
 
   def show
