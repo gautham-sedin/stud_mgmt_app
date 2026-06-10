@@ -1,17 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  name: MyString
-  email: MyString
-  age: 1
-  course: MyString
-  city: MyString
-  marks: 1
+  name: Gautham
+  email: gautham@example.com
+  age: 22
+  course: Rails
+  city: Chennai
+  marks: 90
 
 two:
-  name: MyString
-  email: MyString
-  age: 1
-  course: MyString
-  city: MyString
-  marks: 1
+  name: Arun
+  email: arun@example.com
+  age: 21
+  course: React
+  city: Coimbatore
+  marks: 75

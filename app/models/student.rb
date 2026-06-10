@@ -1,7 +1,7 @@
 class Student < ApplicationRecord
   validates :name, presence: true
 
-  validates :email, 
+  validates :email,
     presence: true,
     uniqueness: true
 
@@ -11,7 +11,7 @@ class Student < ApplicationRecord
       greater_than: 0
     }
 
-  validates :course, 
+  validates :course,
     presence: true
 
   validates :city,

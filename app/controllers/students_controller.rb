@@ -9,7 +9,7 @@ class StudentsController < ApplicationController
   def index
     @students = Student.all
 
-    if(params[:search].present?)
+    if params[:search].present?
       @students = @students.where(
         "name LIKE ? OR email LIKE ?",
         "%#{params[:search]}%",

@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
   def index
-
     @total_students = Student.count
 
     @java_students = Student.where(course: "Java").count
@@ -12,6 +11,5 @@ class HomeController < ApplicationController
     @rails_students = Student.where(course: "Rails").count
 
     @recent_students = Student.order(created_at: :desc).limit(5)
-
   end
 end
