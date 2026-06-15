@@ -20,84 +20,21 @@
 
 <div class="row g-4 mb-5">
 
-  <div class="col-md-6 col-xl-3">
+  <%= render "shared/stats_card",
+      title: "Total Students",
+      count: @total_students %>
 
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body">
+  <%= render "shared/stats_card",
+      title: "React Students",
+      count: @course_counts["React"] || 0 %>
 
-        <p class="text-secondary mb-2">
-          Total Students
-        </p>
+  <%= render "shared/stats_card",
+      title: "Java Students",
+      count: @course_counts["Java"] || 0 %>
 
-        <h2 class="fw-bold">
-          <%= @total_students %>
-        </h2>
-
-      </div>
-    </div>
-
-  </div>
-
-
-  <div class="col-md-6 col-xl-3">
-
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body">
-
-        <p class="text-secondary mb-2">
-          Ruby Students
-        </p>
-
-        <h2 class="fw-bold">
-          <%= @ruby_students %>
-        </h2>
-
-      </div>
-    </div>
-
-  </div>
-
-
-  <div class="col-md-6 col-xl-3">
-
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body">
-
-        <p class="text-secondary mb-2">
-          Rails Students
-        </p>
-
-        <h2 class="fw-bold">
-          <%= @rails_students %>
-        </h2>
-
-      </div>
-    </div>
-
-  </div>
-
-
-  <div class="col-md-6 col-xl-3">
-
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body">
-
-        <p class="text-secondary mb-2">
-          React Students
-        </p>
-
-        <h2 class="fw-bold">
-          <%= @react_students %>
-        </h2>
-
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-
+  <%= render "shared/stats_card",
+      title: "Ruby Students",
+      count: @course_counts["Ruby"] || 0 %>
 
 <div class="row g-4 mb-5">
 
@@ -107,11 +44,11 @@
       <div class="card-body">
 
         <p class="text-secondary mb-2">
-          Java Students
+          Rails Students
         </p>
 
         <h2 class="fw-bold">
-          <%= @java_students %>
+          <%= @course_counts["Rails"] || 0 %>
         </h2>
 
       </div>

@@ -3,7 +3,10 @@ class Student < ApplicationRecord
 
   validates :email,
     presence: true,
-    uniqueness: true
+    uniqueness: true,
+    format: {
+      with: URI::MailTo::EMAIL_REGEXP,
+    }
 
   validates :age,
     presence: true,

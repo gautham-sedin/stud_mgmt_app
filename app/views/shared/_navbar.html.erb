@@ -1,28 +1,48 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-  <div class="container">
-    
-    <%= link_to "Student Management", root_path, class: "navbar-brand fw-bold" %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <% if user_signed_in? %>
+  
+    <div class="container">
+      
+      <%= link_to "Student Management", root_path, class: "navbar-brand fw-bold" %>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <li class="nav-item">
-          <%= link_to "Dashboard", root_path, class: "nav-link" %>
-        </li>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
 
-        <li class="nav-item">
-          <%= link_to "Students", students_path, class: "nav-link" %>
-        </li>
+          <li class="nav-item">
+            <%= link_to "Dashboard", root_path, class: "nav-link" %>
+          </li>
 
-        <li class="nav-item">
-          <%= link_to "Add Student", new_student_path, class: "nav-link" %>
-        </li>
+          <li class="nav-item">
+            <%= link_to "Students", students_path, class: "nav-link" %>
+          </li>
 
-      </ul>
+          <li class="nav-item">
+            <%= link_to "Add Student", new_student_path, class: "nav-link" %>
+          </li>
+
+          <li>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-light btn-sm mt-1 px-2" %>
+          </li>
+
+        </ul>
+      </div>
     </div>
-  </div>
+
+  <% else %>
+
+    <div class="container">
+      <%= link_to "Student Management", root_path, class: "navbar-brand fw-bold" %>
+      <div class="d-flex ms-auto">
+        <%= link_to "Login", new_user_session_path, class: "btn btn-outline-light btn-sm me-2" %>
+        <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-light btn-sm" %>
+      </div>
+    </div>
+
+  <% end %>
+
 </nav>
