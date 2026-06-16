@@ -12,5 +12,4 @@ class ApplicationController < ActionController::Base
     return if current_user.teacher?
     redirect_to root_path, alert: "Access denied."
   end
-
 end

@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def admin?
     current_user&.admin?
   end
@@ -7,5 +6,4 @@ module ApplicationHelper
   def teacher?
     current_user&.teacher?
   end
-
 end

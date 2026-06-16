@@ -63,8 +63,8 @@
       redirect_to students_path, notice: "Student deleted successfully."
     end
 
-    private 
-    
+    private
+
     def set_student
       @student =
         if current_user.admin?

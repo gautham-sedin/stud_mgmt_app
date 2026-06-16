@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   resources :students
 
-  resources :users, only: [:index]
+  resources :users, only: [ :index ]
 end
