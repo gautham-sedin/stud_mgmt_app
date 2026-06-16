@@ -17,13 +17,37 @@
             <%= link_to "Dashboard", root_path, class: "nav-link" %>
           </li>
 
+          <% if admin? %>
+            <li class="nav-item">
+
+              <%= link_to "Teachers",
+                  users_path,
+                  class: "nav-link" %>
+
+            </li>
+          <% end %>
+
           <li class="nav-item">
             <%= link_to "Students", students_path, class: "nav-link" %>
           </li>
 
-          <li class="nav-item">
-            <%= link_to "Add Student", new_student_path, class: "nav-link" %>
+          <% if teacher? || admin? %>
+            <li class="nav-item">
+              <%= link_to "Add Student", new_student_path, class: "nav-link" %>
+            </li>
+          <% end %>
+
+          
+          <li class="nav-item d-flex align-items-center me-2">
+
+            <span class="text-white small">
+              <%= current_user.email %>
+              (<%= current_user.role.capitalize %>)
+            </span>
+
           </li>
+
+          
 
           <li>
             <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-light btn-sm mt-1 px-2" %>
@@ -32,6 +56,8 @@
         </ul>
       </div>
     </div>
+
+    
 
   <% else %>
 
