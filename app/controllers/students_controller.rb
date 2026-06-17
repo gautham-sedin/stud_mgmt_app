@@ -15,10 +15,11 @@
         end
 
       if params[:search].present?
+        search_term = "%#{Student.sanitize_sql_like(params[:search])}%"
         @students = @students.where(
           "name LIKE ? OR email LIKE ?",
-          "%#{params[:search]}%",
-          "%#{params[:search]}%"
+          search_term,
+          search_term
         )
       end
 
