@@ -5,6 +5,7 @@ one:
   course: Rails
   city: Chennai
   marks: 90
+  user: teacher
 
 two:
   name: Arun
@@ -13,3 +14,4 @@ two:
   course: React
   city: Coimbatore
   marks: 75
+  user: teacher

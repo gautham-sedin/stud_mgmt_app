@@ -73,12 +73,30 @@
                 class: "form-label fw-semibold" %>
 
           <%= form.select :course,
-                ["Ruby", "Rails", "React", "Java"],
+                Student::COURSES,
                 { prompt: "Select Course" },
                 class: "form-select" %>
 
         </div>
 
+        <% if current_user.admin? %>
+
+          <div class="col-md-4 mb-4">
+
+            <%= form.label :user_id,
+                  "Teacher",
+                  class: "form-label fw-semibold" %>
+
+            <%= form.collection_select :user_id,
+                  User.teacher.order(:email),
+                  :id,
+                  :email,
+                  { prompt: "Select Teacher" },
+                  class: "form-select" %>
+
+          </div>
+
+        <% end %>
 
         <div class="col-md-4 mb-4">
 
@@ -90,7 +108,6 @@
                 placeholder: "Marks" %>
 
         </div>
-
 
         <div class="col-12 mb-4">
 

@@ -1,0 +1,106 @@
+<div class="card shadow-sm border-0">
+
+  <div class="card-body p-0">
+
+    <% if @students.any? %>
+
+      <div class="table-responsive">
+
+        <table class="table table-hover align-middle mb-0">
+
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Age</th>
+              <th>Course</th>
+              <th>City</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% @students.each do |student| %>
+
+              <tr>
+
+                <td class="fw-semibold">
+                  <%= student.name %>
+                </td>
+
+                <td>
+                  <%= student.email %>
+                </td>
+
+                <td>
+                  <%= student.age %>
+                </td>
+
+                <td>
+                  <span class="badge bg-secondary">
+                    <%= student.course %>
+                  </span>
+                </td>
+
+                <td>
+                  <%= student.city %>
+                </td>
+
+                <td class="text-center">
+
+                  <div class="d-flex justify-content-center gap-2">
+
+                    <%= link_to "View",
+                        student_path(student),
+                        class: "btn btn-sm btn-outline-dark" %>
+
+                    <%= link_to "Edit",
+                        edit_student_path(student),
+                        class: "btn btn-sm btn-outline-primary" %>
+
+                    <%= link_to "Delete",
+                        student_path(student),
+                        data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "Are you sure?"
+                        },
+                        class: "btn btn-sm btn-outline-danger" %>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    <% else %>
+
+      <div class="text-center py-5">
+
+        <h4 class="fw-bold text-dark">
+          No Students Found
+        </h4>
+
+        <p class="text-secondary">
+          Start by adding your first student.
+        </p>
+
+        <%= link_to "Add Student",
+            new_student_path,
+            class: "btn btn-dark mt-2" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

@@ -70,6 +70,11 @@
                 </div>
 
                 <div class="col-md-6 mb-4">
+                    <h6 class="text-secondary mb-2">Teacher: </h6>
+                    <h4><%= @student.user&.email || "Not Assigned" %></h4>
+                </div>
+
+                <div class="col-md-6 mb-4">
                     <h6 class="text-secondary mb-2">Result: </h6>
 
                     <% if @student.result == "Pass" %>

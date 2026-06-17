@@ -75,13 +75,17 @@
     end
 
     def student_params
-      params.require(:student).permit(
+      permitted_attributes = [
         :name,
         :email,
         :age,
         :course,
         :city,
         :marks
-      )
+      ]
+
+      permitted_attributes << :user_id if current_user.admin?
+
+      params.require(:student).permit(permitted_attributes)
     end
   end

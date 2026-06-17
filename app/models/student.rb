@@ -1,4 +1,6 @@
 class Student < ApplicationRecord
+  COURSES = %w[Ruby Rails React Java].freeze
+
   belongs_to :user
 
   validates :name, presence: true
@@ -17,7 +19,8 @@ class Student < ApplicationRecord
     }
 
   validates :course,
-    presence: true
+    presence: true,
+    inclusion: { in: COURSES }
 
   validates :city,
     presence: true
