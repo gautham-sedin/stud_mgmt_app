@@ -3,6 +3,15 @@ class Student < ApplicationRecord
 
   belongs_to :user
 
+  scope :search, ->(term) {
+    search_term = "%#{sanitize_sql_like(term)}%"
+    where("name LIKE :search OR email LIKE :search", search: search_term)
+  }
+
+  scope :by_course, ->(course_name) {
+    where(course: course_name)
+  }
+
   validates :name, presence: true
 
   validates :email,

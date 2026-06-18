@@ -15,16 +15,11 @@
         end
 
       if params[:search].present?
-        search_term = "%#{Student.sanitize_sql_like(params[:search])}%"
-        @students = @students.where(
-          "name LIKE ? OR email LIKE ?",
-          search_term,
-          search_term
-        )
+        @students = @students.search(params[:search])
       end
 
       if params[:course].present?
-        @students = @students.where(course: params[:course])
+        @students = @students.by_course(params[:course])
       end
 
       @students = @students.order(created_at: :desc)
@@ -67,12 +62,8 @@
     private
 
     def set_student
-      @student =
-        if current_user.admin?
-          Student.find(params[:id])
-        else
-          current_user.students.find(params[:id])
-        end
+      scope = current_user.admin? ? Student.all : current_user.students
+      @student = scope.find(params[:id])
     end
 
     def student_params
