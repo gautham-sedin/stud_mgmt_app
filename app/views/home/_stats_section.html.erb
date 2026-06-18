@@ -1,0 +1,90 @@
+<% if admin? %>
+
+  <div class="row g-4 mb-5">
+
+    <%= render "shared/stats_card",
+        title: "Total Students",
+        count: @total_students %>
+
+    <%= render "shared/stats_card",
+        title: "Total Teachers",
+        count: @total_teachers %>
+
+  </div>
+
+  <div class="card border-0 shadow-sm mb-5">
+
+    <div class="card-body">
+
+      <h4 class="fw-bold mb-4">
+        Students Per Teacher
+      </h4>
+
+      <div class="table-responsive">
+
+        <table class="table table-hover">
+
+          <thead>
+
+            <tr>
+              <th>Teacher Email</th>
+              <th>Total Students</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <% @students_per_teacher.each do |teacher| %>
+
+              <tr>
+
+                <td>
+                  <%= teacher.email %>
+                </td>
+
+                <td>
+                  <%= teacher.students.count %>
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<% else %>
+
+  <div class="row g-4 mb-5">
+
+    <%= render "shared/stats_card",
+        title: "Total Students",
+        count: @total_students %>
+
+    <%= render "shared/stats_card",
+        title: "Ruby Students",
+        count: @course_counts["Ruby"] || 0 %>
+
+    <%= render "shared/stats_card",
+        title: "Rails Students",
+        count: @course_counts["Rails"] || 0 %>
+
+    <%= render "shared/stats_card",
+        title: "React Students",
+        count: @course_counts["React"] || 0 %>
+
+    <%= render "shared/stats_card",
+        title: "Java Students",
+        count: @course_counts["Java"] || 0 %>
+
+  </div>
+
+<% end %>

@@ -1,0 +1,34 @@
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+  <div>
+
+    <h1 class="fw-bold mb-1">
+
+      <% if admin? %>
+        Admin Dashboard
+      <% else %>
+        Teacher Dashboard
+      <% end %>
+
+    </h1>
+
+    <p class="text-secondary mb-0">
+      Student Management Analytics Overview
+    </p>
+
+  </div>
+
+  <%= link_to "Add Student",
+      new_student_path,
+      class: "btn btn-dark" %>
+
+</div>
+
+
+<% if teacher? %>
+
+  <div class="alert alert-info mb-4">
+    You are viewing only students managed by you.
+  </div>
+
+<% end %>

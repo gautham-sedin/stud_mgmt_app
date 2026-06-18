@@ -1,0 +1,37 @@
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+
+    <%= form_with url: students_path,
+                  method: :get,
+                  local: true do %>
+
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <%= text_field_tag :search,
+                             params[:search],
+                             placeholder: "Search by name or email",
+                             class: "form-control" %>
+        </div>
+
+        <div class="col-md-4">
+          <%= select_tag :course,
+                options_for_select(
+                  Student::COURSES,
+                  params[:course]
+                ),
+                include_blank: "Filter by Course",
+                class: "form-select" %>
+        </div>
+
+        <div class="col-md-2 d-grid">
+          <%= submit_tag "Search",
+                         class: "btn btn-dark" %>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
