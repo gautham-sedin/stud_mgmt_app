@@ -1,0 +1,97 @@
+<!-- app/views/home/_student_dashboard.html.erb -->
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    
+    <!-- Header Greeting -->
+    <div class="d-flex align-items-center justify-content-between mb-5">
+      <div>
+        <h1 class="fw-bold mb-1">Welcome back, <%= @student.name %>!</h1>
+        <p class="text-secondary mb-0">Review your academic records, course performance, and profile details below.</p>
+      </div>
+      <div>
+        <span class="badge bg-dark fs-6 px-3 py-2 shadow-sm">Role: Student</span>
+      </div>
+    </div>
+
+    <!-- Student Details Card -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-dark text-white py-3">
+        <h5 class="card-title mb-0 fw-bold">Student Profile Details</h5>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <h6 class="text-secondary mb-1">Email Address</h6>
+            <h5 class="fw-semibold"><%= @student.email %></h5>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-secondary mb-1">Age</h6>
+            <h5 class="fw-semibold"><%= @student.age %> years old</h5>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-secondary mb-1">Course Enrolled</h6>
+            <div>
+              <span class="badge fs-6 <%= course_badge_class(@student.course) %>">
+                <%= @student.course %>
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-secondary mb-1">City / Location</h6>
+            <h5 class="fw-semibold"><%= @student.city %></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Progress Card -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-dark text-white py-3">
+        <h5 class="card-title mb-0 fw-bold">Academic Performance Overview</h5>
+      </div>
+      <div class="card-body p-4">
+        <div class="row align-items-center">
+          
+          <!-- Marks column -->
+          <div class="col-md-6 border-end text-center py-3">
+            <h6 class="text-secondary mb-2 fw-bold text-uppercase">Marks Secured</h6>
+            <h1 class="display-3 fw-bold text-dark mb-0"><%= @student.marks || "N/A" %></h1>
+            <p class="text-muted small mb-0">Out of 100 points maximum</p>
+          </div>
+
+          <!-- Result Column -->
+          <div class="col-md-6 text-center py-3">
+            <h6 class="text-secondary mb-2 fw-bold text-uppercase">Result Status</h6>
+            <% if @student.result == "Pass" %>
+              <span class="badge bg-success fs-4 px-4 py-2 shadow-sm">PASS</span>
+              <p class="text-success mt-2 mb-0 small">Congratulations! You have cleared this course.</p>
+            <% elsif @student.result == "Fail" %>
+              <span class="badge bg-danger fs-4 px-4 py-2 shadow-sm">FAIL</span>
+              <p class="text-danger mt-2 mb-0 small">Please connect with your instructor to schedule a re-exam.</p>
+            <% else %>
+              <span class="badge bg-secondary fs-4 px-4 py-2 shadow-sm">PENDING</span>
+              <p class="text-muted mt-2 mb-0 small">Your final marks have not yet been published.</p>
+            <% end %>
+          </div>
+
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Assigned Instructor Details -->
+        <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded border">
+          <div>
+            <h6 class="fw-bold mb-1">Assigned Instructor</h6>
+            <p class="text-muted mb-0 small">For queries regarding coursework or marks, contact your instructor.</p>
+          </div>
+          <div class="text-end">
+            <span class="fw-bold text-dark d-block"><%= @student.user&.name || "Administrator" %></span>
+            <span class="text-secondary small"><%= @student.user&.email %></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

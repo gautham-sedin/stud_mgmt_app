@@ -1,4 +1,5 @@
   class StudentsController < ApplicationController
+    before_action :require_teacher_or_admin!, except: [:show]
     before_action :set_student, only: [
       :show,
       :edit,
@@ -26,6 +27,12 @@
     end
 
     def show
+      if current_user.student?
+        student_profile = Student.find_by(email: current_user.email)
+        if student_profile.nil? || student_profile.id != @student.id
+          redirect_to root_path, alert: "Access denied. You can only view your own student profile."
+        end
+      end
     end
 
     def new
@@ -63,6 +70,7 @@
 
     def set_student
       scope = current_user.admin? ? Student.all : current_user.students
+      scope = Student.all if current_user.student?
       @student = scope.find(params[:id])
     end
 
