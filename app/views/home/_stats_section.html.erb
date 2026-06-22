@@ -27,6 +27,7 @@
           <thead>
 
             <tr>
+              <th>Teacher Name</th>
               <th>Teacher Email</th>
               <th>Total Students</th>
             </tr>
@@ -38,6 +39,10 @@
             <% @students_per_teacher.each do |teacher| %>
 
               <tr>
+
+                <td>
+                  <%= teacher.name || "Not Assigned" %>
+                </td>
 
                 <td>
                   <%= teacher.email %>

@@ -7,13 +7,19 @@
       <% if admin? %>
         Admin Dashboard
       <% else %>
-        Teacher Dashboard
+        Welcome back, <%= current_user.name %>!
       <% end %>
 
     </h1>
 
     <p class="text-secondary mb-0">
-      Student Management Analytics Overview
+
+      <% if admin? %>
+        Student Management Analytics Overview
+      <% else %>
+        You are viewing only students managed by you.
+      <% end %>
+      
     </p>
 
   </div>
@@ -23,12 +29,3 @@
       class: "btn btn-dark" %>
 
 </div>
-
-
-<% if teacher? %>
-
-  <div class="alert alert-info mb-4">
-    You are viewing only students managed by you.
-  </div>
-
-<% end %>
