@@ -1,0 +1,163 @@
+{
+  "info": {
+    "name": "Student Management APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Teacher APIs",
+      "item": [
+        {
+          "name": "Create Teacher",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacher\": {\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe@studentapp.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/teachers", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers"] }
+          }
+        },
+        {
+          "name": "Fetch All Teachers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/teachers", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers"] }
+          }
+        },
+        {
+          "name": "Fetch Teacher by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/teachers/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers", "1"] }
+          }
+        },
+        {
+          "name": "Update Teacher",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacher\": {\n    \"name\": \"John Updated\"\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/teachers/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers", "1"] }
+          }
+        },
+        {
+          "name": "Delete Teacher",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:3000/api/teachers/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student APIs",
+      "item": [
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student\": {\n    \"name\": \"Alice Cooper\",\n    \"email\": \"alice.cooper@example.com\",\n    \"age\": 21,\n    \"course\": \"Ruby\",\n    \"city\": \"Chennai\",\n    \"marks\": 92,\n    \"user_id\": 2\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/students", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students"] }
+          }
+        },
+        {
+          "name": "Fetch All Students",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/students", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students"] }
+          }
+        },
+        {
+          "name": "Fetch Student by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/students/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students", "1"] }
+          }
+        },
+        {
+          "name": "Update Student",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student\": {\n    \"marks\": 95\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/students/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students", "1"] }
+          }
+        },
+        {
+          "name": "Delete Student",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:3000/api/students/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Association APIs",
+      "item": [
+        {
+          "name": "Fetch Students of a Teacher",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/teachers/2/students", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers", "2", "students"] }
+          }
+        },
+        {
+          "name": "Create Student Under Teacher",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student\": {\n    \"name\": \"Bob Dylan\",\n    \"email\": \"bob.dylan@example.com\",\n    \"age\": 22,\n    \"course\": \"React\",\n    \"city\": \"Bangalore\",\n    \"marks\": 85\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/teachers/2/students", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "teachers", "2", "students"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filters & Error Checking",
+      "item": [
+        {
+          "name": "Negative - Missing Student Name",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student\": {\n    \"name\": \"\",\n    \"email\": \"missing@example.com\"\n  }\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/students", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students"] }
+          }
+        },
+        {
+          "name": "Filter Students by Name",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/students?name=Alice", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students"], "query": [{ "key": "name", "value": "Alice" }] }
+          }
+        },
+        {
+          "name": "Filter Students by Grade A",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:3000/api/students?grade=A", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "students"], "query": [{ "key": "grade", "value": "A" }] }
+          }
+        }
+      ]
+    }
+  ]
+}
