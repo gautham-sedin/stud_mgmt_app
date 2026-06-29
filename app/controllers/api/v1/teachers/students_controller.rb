@@ -52,7 +52,7 @@ class Api::V1::Teachers::StudentsController < ApiController
     @teacher = User.teacher.find_by(id: params[:teacher_id])
 
     if @teacher.nil?
-      render json: { errors: ["Teacher not found"] }, status: :not_found
+      render json: { errors: [ "Teacher not found" ] }, status: :not_found
     end
   end
 
@@ -62,7 +62,7 @@ class Api::V1::Teachers::StudentsController < ApiController
 
   def require_admin_or_self!
     unless current_api_user.admin? || current_api_user.id == params[:teacher_id].to_i
-      render json: { errors: ["Access denied. You can only view your own students."] }, status: :forbidden
+      render json: { errors: [ "Access denied. You can only view your own students." ] }, status: :forbidden
     end
   end
 end
