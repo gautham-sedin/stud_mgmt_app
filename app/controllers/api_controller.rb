@@ -31,4 +31,3 @@ class ApiController < ActionController::API
     @current_api_user
   end
 end
-c
