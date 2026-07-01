@@ -1,6 +1,6 @@
 class Api::V1::TeachersController < ApiController
   before_action :require_admin!
-  before_action :set_teacher, only: [:show, :update, :destroy]
+  before_action :set_teacher, only: [ :show, :update, :destroy ]
 
   def index
     teachers = User.teacher
@@ -81,7 +81,7 @@ class Api::V1::TeachersController < ApiController
     @teacher = User.teacher.find_by(id: params[:id])
 
     if @teacher.nil?
-      render json: { errors: ["Teacher not found"] }, status: :not_found
+      render json: { errors: [ "Teacher not found" ] }, status: :not_found
     end
   end
 
@@ -91,7 +91,7 @@ class Api::V1::TeachersController < ApiController
 
   def require_admin!
     unless current_api_user.admin?
-      render json: { errors: ["Access denied. Admins only."] }, status: :forbidden
+      render json: { errors: [ "Access denied. Admins only." ] }, status: :forbidden
     end
   end
 end

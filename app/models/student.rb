@@ -5,9 +5,17 @@ class Student < ApplicationRecord
 
   belongs_to :student_user, class_name: "User", optional: true
 
-  after_create :create_student_user_account
-  after_update :sync_student_user_account
-  after_destroy :destroy_student_user_account
+  after_create do
+    StudentUserSyncService.new(self).create_user
+  end
+
+  after_update do
+    StudentUserSyncService.new(self).update_user
+  end
+
+  after_destroy do
+    StudentUserSyncService.new(self).destroy_user
+  end
 
   scope :search, ->(term) {
     search_term = "%#{sanitize_sql_like(term)}%"
@@ -63,38 +71,5 @@ class Student < ApplicationRecord
     return "NA" if marks.nil?
 
     marks >= 35 ? "Pass" : "Fail"
-  end
-
-  private
-
-  def create_student_user_account
-    return if User.exists?(email: email)
-
-    User.create!(
-      name: name,
-      email: email,
-      password: "password123",
-      password_confirmation: "password123",
-      role: :student
-    )
-  end
-
-  def sync_student_user_account
-    if saved_change_to_email? || saved_change_to_name?
-      old_email = saved_change_to_email ? email_before_last_save : email
-      user = User.find_by(email: old_email)
-
-      if user&.student?
-        user.update(
-          email: email,
-          name: name
-        )
-      end
-    end
-  end
-
-  def destroy_student_user_account
-    user = User.find_by(email: email)
-    user.destroy if user&.student?
   end
 end

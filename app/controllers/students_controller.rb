@@ -1,5 +1,5 @@
   class StudentsController < ApplicationController
-    before_action :require_teacher_or_admin!, except: [:show]
+    before_action :require_teacher_or_admin!, except: [ :show ]
     before_action :set_student, only: [
       :show,
       :edit,
@@ -69,8 +69,7 @@
     private
 
     def set_student
-      scope = current_user.admin? ? Student.all : current_user.students
-      scope = Student.all if current_user.student?
+      scope = (current_user.admin? || current_user.student?) ? Student.all : current_user.students
       @student = scope.find(params[:id])
     end
 

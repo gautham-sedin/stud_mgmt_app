@@ -17,7 +17,7 @@ class Api::V1::AuthController < ApiController
         }
       }, status: :ok
     else
-      render json: { errors: ["Invalid email or password"] }, status: :unauthorized
+      render json: { errors: [ "Invalid email or password" ] }, status: :unauthorized
     end
   end
 

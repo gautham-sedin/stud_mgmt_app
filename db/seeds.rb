@@ -127,7 +127,9 @@ teachers.each do |teacher|
     # Safe fallback creation of User login record for the Student:
     # If the student model callbacks have already been written, they will auto-create
     # the user and this check will skip it. If not, this seeds it manually.
-    unless User.exists?(email: student_email)
+    user = User.find_by(email: student_email)
+
+    if user.nil?
       User.create!(
         name: student_name,
         email: student_email,
@@ -135,6 +137,8 @@ teachers.each do |teacher|
         password_confirmation: "password123",
         role: :student
       )
+    elsif !user.student?
+      raise "User with email #{student_email} already exists but is not a student."
     end
 
     student_counter += 1
