@@ -88,9 +88,9 @@
                   class: "form-label fw-semibold" %>
 
             <%= form.collection_select :user_id,
-                  User.teacher.order(:email),
+                  User.teacher.order(:name),
                   :id,
-                  :email,
+                  :name,
                   { prompt: "Select Teacher" },
                   class: "form-select" %>
 

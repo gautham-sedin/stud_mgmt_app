@@ -1,4 +1,8 @@
-<%= render "header" %>
-<%= render "stats_section" %>
-<%= render "quick_actions" %>
-<%= render "recent_students" %>
+<% if current_user.student? %>
+    <%= render "student_dashboard" %>
+<% else %>
+    <%= render "header" %>
+    <%= render "stats_section" %>
+    <%= render "quick_actions" %>
+    <%= render "recent_students" %>
+<% end %>

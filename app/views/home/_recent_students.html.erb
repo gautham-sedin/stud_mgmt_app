@@ -57,7 +57,7 @@
 
                 <td>
 
-                  <span class="badge bg-dark">
+                  <span class="badge <%= course_badge_class(student.course) %>">
                     <%= student.course %>
                   </span>
 
@@ -94,7 +94,7 @@
                 <% if admin? %>
 
                   <td>
-                    <%= student.user&.email || 'Not Assigned' %>
+                    <%= student.user&.name || 'Not Assigned' %>
                   </td>
 
                 <% end %>

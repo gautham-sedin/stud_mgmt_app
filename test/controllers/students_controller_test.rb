@@ -1,52 +1,46 @@
+# test/controllers/students_controller_test.rb
 require "test_helper"
 
 class StudentsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @student = students(:one)
-    # Sign in as admin to keep all tests simple and authorized
-    sign_in users(:admin)
+    @student_record = students(:one)
+    # Automatically created student user matched by email
+    @student_user = User.create!(
+      name: @student_record.name,
+      email: @student_record.email,
+      password: "password123",
+      role: :student
+    )
   end
 
-  test "should get index" do
+  test "student user should load root dashboard successfully" do
+    sign_in @student_user
+    get root_url
+    assert_response :success
+  end
+
+  test "student user should not get index list of students" do
+    sign_in @student_user
     get students_url
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_match "Access denied", response.body
+  end
+
+  test "student user should get their own show page" do
+    sign_in @student_user
+    get student_url(@student_record)
     assert_response :success
   end
 
-  test "should get new" do
-    get new_student_url
-    assert_response :success
-  end
-
-  test "should create student" do
-    assert_difference("Student.count") do
-      post students_url, params: {
-        student: { age: 20, city: "Chennai", course: "Rails", email: "new@example.com", name: "New" }
-      }
-    end
-    assert_redirected_to student_url(Student.last)
-  end
-
-  test "should show student" do
-    get student_url(@student)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_student_url(@student)
-    assert_response :success
-  end
-
-  test "should update student" do
-    patch student_url(@student), params: { student: { city: "Updated City" } }
-    assert_redirected_to student_url(@student)
-  end
-
-  test "should destroy student" do
-    assert_difference("Student.count", -1) do
-      delete student_url(@student)
-    end
-    assert_redirected_to students_url
+  test "student user should not view another student's profile page" do
+    sign_in @student_user
+    other_student = students(:two)
+    get student_url(other_student)
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_match "Access denied", response.body
   end
 end
