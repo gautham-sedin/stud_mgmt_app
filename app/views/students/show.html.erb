@@ -26,6 +26,26 @@
     <div class="card border-3 shadow-sm mt-4">
         <div class="card-body p-5">
 
+            <div class="d-flex justify-content-center mb-4">
+                
+                <% if @student.profile_photo.attached? %>
+
+                    <%= image_tag @student.profile_photo,
+                        class: "rounded border shadow",
+                        style: "width: 270px; height: 270px; object-fit: cover;" %>
+
+                <% else %>
+                
+                    <div class="rounded bg-light border d-inline-flex justify-content-center align-items-center shadow" style="width: 270px; height: 270px;">
+                        <span class="text-secondary">
+                            No profile photo
+                        </span>
+                    </div>
+
+                <% end %>
+
+            </div>
+
             <div class="row">
                 <div class="col-md-6 mb-4">
 
@@ -99,6 +119,56 @@
                 </div>
 
             </div>
+
+            <hr class="my-4">
+
+            <h4 class="fw-semibold mb-3">
+                Student Documents
+                (<%= @student.documents.count %>)
+            </h4>
+
+            <% if @student.documents.attached? %>
+
+                <div class="list-group mb-4">
+
+                    <% @student.documents.each do |document| %>
+
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <%= document.filename.to_s %>
+                                <span class="text-muted">
+                                    (<%= number_to_human_size(document.byte_size) %>) 
+                                </span>
+                            </span>
+
+                            <span class="d-flex gap-2">
+
+                                <%= link_to "Download",
+                                    rails_blob_path(document, disposition: "attachment"),
+                                    class: "btn btn-outline-dark btn-sm" %>
+
+                                <%= link_to "Delete",
+                                    remove_document_student_path(@student, attachment_id: document.id),
+                                    data: {
+                                        turbo_method: :delete,
+                                        turbo_confirm: "Are you sure you want to delete this document?"
+                                    },
+                                    class: "btn btn-outline-danger btn-sm" %>
+
+                            </span>
+                        </div>
+
+                    <% end %>
+
+                </div>
+
+            <% else %>
+
+                <div class="alert alert-secondary mb-4" role="alert">
+                    No documents uploaded.
+                </div>
+
+            <% end %>
 
             <hr class="my-4">
 

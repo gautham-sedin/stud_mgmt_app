@@ -4,7 +4,9 @@
       :show,
       :edit,
       :update,
-      :destroy
+      :destroy,
+      :remove_profile_photo,
+      :remove_document
     ]
 
     def index
@@ -66,6 +68,21 @@
       redirect_to students_path, notice: "Student deleted successfully."
     end
 
+    def remove_profile_photo
+      @student.profile_photo.purge
+
+      redirect_to @student, notice: "Profile photo deleted successfully."
+    end
+
+    def remove_document
+      attachment = @student.documents.attachments.find_by(id: params[:attachment_id])
+      redirect_to @student, alert: "Document not found." and return unless attachment
+
+      attachment.purge
+
+      redirect_to @student, notice: "Document deleted successfully."
+    end
+
     private
 
     def set_student
@@ -80,7 +97,9 @@
         :age,
         :course,
         :city,
-        :marks
+        :marks,
+        :profile_photo,
+        documents: []
       ]
 
       permitted_attributes << :user_id if current_user.admin?
