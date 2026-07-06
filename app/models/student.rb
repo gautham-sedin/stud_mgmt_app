@@ -17,6 +17,12 @@ class Student < ApplicationRecord
     StudentUserSyncService.new(self).create_user
   end
 
+  after_create :send_welcome_email
+
+  after_update :send_teacher_assignment_notification
+
+  after_update :send_marks_published_notification
+
   after_update do
     StudentUserSyncService.new(self).update_user
   end
@@ -82,6 +88,7 @@ class Student < ApplicationRecord
   end
 
   private
+
   def validate_profile_photo
     return unless profile_photo.attached?
 
@@ -107,5 +114,21 @@ class Student < ApplicationRecord
         errors.add(:documents, "#{document.filename} size must be less than 10MBs")
       end
     end
+  end
+
+  def send_welcome_email
+    StudentNotificationService.send_welcome_email(self)
+  end
+
+  def send_teacher_assignment_notification
+    return unless saved_change_to_user_id?
+
+    StudentNotificationService.send_teacher_assignment_notification(self)
+  end
+
+  def send_marks_published_notification
+    return unless saved_change_to_marks?
+
+    StudentNotificationService.send_marks_published_notification(self)
   end
 end

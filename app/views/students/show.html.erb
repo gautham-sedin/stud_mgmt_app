@@ -21,6 +21,10 @@
             turbo_confirm: "Are you sure you want to delete this student?"
         },
         class: "btn btn-outline-danger" %>
+
+        <%= link_to "Download Report",
+            download_report_student_path(@student),
+            class: "btn btn-outline-success"%>
     </div>
 
     <div class="card border-3 shadow-sm mt-4">

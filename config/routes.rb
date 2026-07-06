@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   resources :students do
     member do
+      get :download_report
+    end
+
+    member do
       delete :remove_profile_photo
     end
 
