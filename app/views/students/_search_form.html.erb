@@ -3,7 +3,11 @@
 
     <%= form_with url: students_path,
                   method: :get,
-                  local: true do %>
+                  data: {
+                    controller: "search",
+                    turbo_frame: "students_table",
+                    turbo_action: "advance"
+                  } do |form| %>
 
       <div class="row g-3">
 
@@ -11,7 +15,10 @@
           <%= text_field_tag :search,
                              params[:search],
                              placeholder: "Search by name or email",
-                             class: "form-control" %>
+                             class: "form-control",
+                             data: {
+                               action: "input->search#submit"
+                             } %>
         </div>
 
         <div class="col-md-4">
@@ -21,7 +28,10 @@
                   params[:course]
                 ),
                 include_blank: "Filter by Course",
-                class: "form-select" %>
+                class: "form-select",
+                data: {
+                  action: "change->search#submit"
+                } %>
         </div>
 
         <div class="col-md-2 d-grid">

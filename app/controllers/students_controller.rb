@@ -27,6 +27,10 @@ class StudentsController < ApplicationController
     end
 
     @students = @students.order(created_at: :desc)
+
+    if turbo_frame_request?
+      render partial: "student_table"
+    end
   end
 
   def show
@@ -50,34 +54,111 @@ class StudentsController < ApplicationController
         current_user.students.build(student_params)
       end
 
-    if @student.save
-      redirect_to @student, notice: "Student created successfully."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @student.save
+        @student_count =
+          if current_user.admin?
+            Student.count
+          else
+            current_user.students.count
+          end
+          
+        format.html do
+          redirect_to @student, notice: "Student created successfully."
+        end
+
+        format.turbo_stream do
+          flash.now[:notice] = "Student created successfully."
+        end
+      else
+        format.html do
+          render :new, status: :unprocessable_entity
+        end
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "quick_student_form",
+            partial: "students/quick_form",
+            locals: { student: @student }
+          ), status: :unprocessable_entity
+        end
+      end
     end
   end
 
   def edit
+    if turbo_frame_request?
+      render inline: helpers.turbo_frame_tag("student_form") {
+        render_to_string(
+          partial: "quick_form",
+          locals: { student: @student }
+        )
+      }
+    end
   end
 
   def update
     attachments_uploaded = attachments_uploaded?
 
-    if @student.update(student_params)
-      if attachments_uploaded
-        StudentNotificationService.send_attachment_upload_notifications(@student)
-      end
+    respond_to do |format|
+      if @student.update(student_params)
 
-      redirect_to @student, notice: "Student updated successfully."
-    else
-      render :edit, status: :unprocessable_entity
+        if attachments_uploaded
+          StudentNotificationService.send_attachment_upload_notifications(@student)
+        end
+
+        format.html do
+          redirect_to @student,
+                      notice: "Student updated successfully."
+        end
+
+        format.turbo_stream do
+          flash.now[:notice] = "Student updated successfully."
+        end
+
+      else
+
+        format.html do
+          render :edit,
+                status: :unprocessable_entity
+        end
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "quick_student_form",
+            partial: "students/quick_form",
+            locals: {
+              student: @student
+            }
+          ), status: :unprocessable_entity
+        end
+
+      end
     end
   end
 
   def destroy
+    @student_dom_id = helpers.dom_id(@student)
+
     @student.destroy
 
-    redirect_to students_path, notice: "Student deleted successfully."
+    @student_count = 
+        if current_user.admin?
+          Student.count
+        else
+          current_user.students.count
+        end
+
+    respond_to do |format|
+      format.html do
+        redirect_to students_path,
+                    notice: "Student deleted successfully."
+      end
+
+      format.turbo_stream do
+        flash.now[:notice] = "Student deleted successfully."
+      end
+    end
   end
 
   def remove_profile_photo

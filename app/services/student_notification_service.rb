@@ -1,6 +1,6 @@
 class StudentNotificationService
   def self.send_welcome_email(student)
-    StudentMailer.welcome_email(student).deliver_now
+    StudentMailer.welcome_email(student).deliver_later
   end
 
   def self.send_teacher_assignment_notification(student)

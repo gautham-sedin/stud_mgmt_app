@@ -27,7 +27,7 @@
     <% end %>
 
 
-    <%= form_with model: @student, local: true do |form| %>
+    <%= form_with model: @student, local: true, data: { controller: "student-form" } do |form| %>
 
       <div class="row">
 
@@ -38,7 +38,15 @@
 
           <%= form.text_field :name,
                 class: "form-control",
-                placeholder: "Enter student name" %>
+                placeholder: "Enter student name",
+                data: {
+                  student_form_target: "name requiredField",
+                  action: "input->student-form#check"
+                } %>
+          
+          <div class="form-text">
+            Character count: <span class="fw-semibold" data-student-form-target="counter">0</span>
+          </div>
 
         </div>
 
@@ -50,7 +58,11 @@
 
           <%= form.email_field :email,
                 class: "form-control",
-                placeholder: "Enter email address" %>
+                placeholder: "Enter email address",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
 
         </div>
 
@@ -62,7 +74,11 @@
 
           <%= form.number_field :age,
                 class: "form-control",
-                placeholder: "Age" %>
+                placeholder: "Age",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
 
         </div>
 
@@ -75,7 +91,11 @@
           <%= form.select :course,
                 Student::COURSES,
                 { prompt: "Select Course" },
-                class: "form-select" %>
+                class: "form-select",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "change->student-form#check"
+                } %>
 
         </div>
 
@@ -116,7 +136,11 @@
 
           <%= form.text_field :city,
                 class: "form-control",
-                placeholder: "Enter city name" %>
+                placeholder: "Enter city name",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
 
         </div>
 
@@ -258,7 +282,7 @@
 
       <div class="d-flex gap-3">
 
-        <%= form.submit class: "btn btn-dark px-4" %>
+        <%= form.submit class: "btn btn-dark px-4", data: { student_form_target: "submit" } %>
 
         <%= link_to "Back",
             students_path,
