@@ -27,16 +27,25 @@ class StudentMailer < ApplicationMailer
     )
   end
 
-  def marks_published(student)
+  def report_card_ready(student)
     @student = student
-
-    pdf = StudentReportPdfService.new(@student).generate
-
-    attachments["#{@student.name.parameterize}_report.pdf"] = pdf
 
     mail(
       to: @student.email,
-      subject: "Your Marks have been Published"
+      subject: "Your Report Card is Ready"
     )
   end
+
+  # def marks_published(student)
+  #   @student = student
+
+  #   pdf = StudentReportPdfService.new(@student).generate
+
+  #   attachments["#{@student.name.parameterize}_report.pdf"] = pdf
+
+  #   mail(
+  #     to: @student.email,
+  #     subject: "Your Marks have been Published"
+  #   )
+  # end
 end

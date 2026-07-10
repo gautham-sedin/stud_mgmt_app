@@ -69,3 +69,5 @@ gem "jwt"
 gem "rack-cors"
 
 gem "prawn"
+
+gem "sidekiq"

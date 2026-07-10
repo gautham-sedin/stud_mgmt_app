@@ -7,6 +7,8 @@ class Student < ApplicationRecord
 
   has_one_attached :profile_photo
 
+  has_one_attached :report_card
+
   has_many_attached :documents
 
   validate :validate_profile_photo
@@ -21,7 +23,7 @@ class Student < ApplicationRecord
 
   after_update :send_teacher_assignment_notification
 
-  after_update :send_marks_published_notification
+  # after_update :send_marks_published_notification
 
   after_update do
     StudentUserSyncService.new(self).update_user
@@ -126,9 +128,9 @@ class Student < ApplicationRecord
     StudentNotificationService.send_teacher_assignment_notification(self)
   end
 
-  def send_marks_published_notification
-    return unless saved_change_to_marks?
+  # def send_marks_published_notification
+  #   return unless saved_change_to_marks?
 
-    StudentNotificationService.send_marks_published_notification(self)
-  end
+  #   StudentNotificationService.send_marks_published_notification(self)
+  # end
 end

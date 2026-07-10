@@ -1,5 +1,9 @@
 class StudentsController < ApplicationController
-  before_action :require_teacher_or_admin!, except: [ :show ]
+  before_action :require_teacher_or_admin!, except: [ 
+    :show,
+    :generate_report,
+    :download_report
+  ]
   before_action :set_student, only: [
     :show,
     :edit,
@@ -7,7 +11,8 @@ class StudentsController < ApplicationController
     :destroy,
     :remove_profile_photo,
     :remove_document,
-    :download_report
+    :download_report,
+    :generate_report
   ]
 
   def index
@@ -178,13 +183,44 @@ class StudentsController < ApplicationController
   end
 
   def download_report
-    Rails.logger.info @student.inspect
-    pdf = StudentReportPdfService.new(@student).generate
+    student = current_user.student? ? Student.find_by!(email: current_user.email) : @student
 
-    send_data pdf,
-              filename: "#{@student.name.parameterize}_report.pdf",
-              type: "application/pdf",
-              disposition: "attachment"
+    unless student.report_card.attached?
+      redirect_back(
+        fallback_location: root_path,
+        alert: "Report card has not been generated yet."
+      )
+      return
+    end
+
+    redirect_to rails_blob_path(
+      student.report_card,
+      disposition: "attachment"
+    )
+  end
+
+  def generate_report
+    if current_user.student?
+      student = Student.find_by!(email: current_user.email)
+    else
+      student = @student
+    end
+
+    GenerateStudentReportJob.perform_later(student.id)
+
+    redirect_back(
+      fallback_location: root_path,
+      notice: "Report generation has been queued successfully."
+    )
+  end
+
+  def generate_all_reports
+    Student.find_each do |student|
+      GenerateStudentReportJob.perform_later(student.id)
+    end
+
+    redirect_to students_path,
+                notice: "Report generation has been queued successfully."
   end
 
   # Private methods

@@ -15,7 +15,11 @@ class StudentNotificationService
     TeacherMailer.student_uploaded_attachments(student).deliver_now
   end
 
-  def self.send_marks_published_notification(student)
-    StudentMailer.marks_published(student).deliver_now
+  # def self.send_marks_published_notification(student)
+  #   StudentMailer.marks_published(student).deliver_now
+  # end
+
+  def self.send_report_card_ready(student)
+    StudentMailer.report_card_ready(student).deliver_later
   end
 end

@@ -22,9 +22,18 @@
         },
         class: "btn btn-outline-danger" %>
 
+        <% if current_user.admin? %>
+
+            <%= button_to "Generate Report Card",
+                generate_report_student_path(@student),
+                method: :post,
+                class: "btn btn-outline-warning" %>
+        
+        <% end %>
+
         <%= link_to "Download Report",
             download_report_student_path(@student),
-            class: "btn btn-outline-success"%>
+            class: "btn btn-outline-success" %>
     </div>
 
     <div class="card border-3 shadow-sm mt-4">
