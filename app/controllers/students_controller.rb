@@ -206,7 +206,7 @@ class StudentsController < ApplicationController
       student = @student
     end
 
-    GenerateStudentReportJob.perform_later(student.id)
+    StudentReportService.queue(student)
 
     redirect_back(
       fallback_location: root_path,
@@ -215,12 +215,11 @@ class StudentsController < ApplicationController
   end
 
   def generate_all_reports
-    Student.find_each do |student|
-      GenerateStudentReportJob.perform_later(student.id)
-    end
+    StudentReportService.queue_all
 
     redirect_to students_path,
                 notice: "Report generation has been queued successfully."
+                
   end
 
   # Private methods
