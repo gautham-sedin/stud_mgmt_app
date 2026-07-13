@@ -9,8 +9,8 @@ class StudentUserSyncService
     User.create!(
       name: @student.name,
       email: @student.email,
-      password: "password123",
-      password_confirmation: "password123",
+      password: AppConstants::STUDENT_DEFAULT_PASSWORD,
+      password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
       role: :student
     )
   end
