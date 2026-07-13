@@ -10,7 +10,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     @student_user = User.create!(
       name: @student_record.name,
       email: @student_record.email,
-      password: "password123",
+      password: AppConstants::STUDENT_DEFAULT_PASSWORD,
       role: :student
     )
   end

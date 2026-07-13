@@ -16,8 +16,8 @@ puts "===================================="
 admin = User.create!(
   name: "System Administrator",
   email: "admin@studentapp.com",
-  password: "password123",
-  password_confirmation: "password123",
+  password: AppConstants::STUDENT_DEFAULT_PASSWORD,
+  password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
   role: :admin
 )
 
@@ -40,8 +40,8 @@ teachers = []
   teachers << User.create!(
     name: teacher_names[index] || "Teacher #{index + 1}",
     email: "teacher#{index + 1}@studentapp.com",
-    password: "password123",
-    password_confirmation: "password123",
+    password: AppConstants::STUDENT_DEFAULT_PASSWORD,
+    password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
     role: :teacher
   )
 end
@@ -133,8 +133,8 @@ teachers.each do |teacher|
       User.create!(
         name: student_name,
         email: student_email,
-        password: "password123",
-        password_confirmation: "password123",
+        password: AppConstants::STUDENT_DEFAULT_PASSWORD,
+        password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
         role: :student
       )
     elsif !user.student?
@@ -160,20 +160,20 @@ puts "===================================="
 
 puts "Admin:"
 puts "Email    : admin@studentapp.com"
-puts "Password : password123"
+puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 
 puts ""
 puts "Teachers:"
 teachers.each do |teacher|
   puts "Email    : #{teacher.email} (Name: #{teacher.name})"
 end
-puts "Password : password123"
+puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 
 puts ""
 puts "Students Sample Login:"
 sample_student = Student.first
 if sample_student
   puts "Email    : #{sample_student.email} (Name: #{sample_student.name})"
-  puts "Password : password123"
+  puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 end
 puts "===================================="

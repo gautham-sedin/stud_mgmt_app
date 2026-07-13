@@ -28,7 +28,19 @@ Rails.application.routes.draw do
         resources :students, only: [ :index, :create ], module: :teachers
       end
 
-      resources :students, only: [ :index, :show, :create, :update, :destroy ]
+      resources :students, 
+                only: [ :index, :show, :create, :update, :destroy ] do
+
+        member do
+          post :generate_report
+          get :report
+        end
+
+        collection do
+          post :generate_all_reports
+        end
+      end
+      
     end
   end
 end

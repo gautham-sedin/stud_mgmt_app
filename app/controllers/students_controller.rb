@@ -181,10 +181,47 @@ class StudentsController < ApplicationController
     Rails.logger.info @student.inspect
     pdf = StudentReportPdfService.new(@student).generate
 
+<<<<<<< Updated upstream
     send_data pdf,
               filename: "#{@student.name.parameterize}_report.pdf",
               type: "application/pdf",
               disposition: "attachment"
+=======
+    unless student.report_card.attached?
+      redirect_back(
+        fallback_location: root_path,
+        alert: "Report card has not been generated yet."
+      )
+      return
+    end
+
+    redirect_to rails_blob_path(
+      student.report_card,
+      disposition: "attachment"
+    )
+  end
+
+  def generate_report
+    if current_user.student?
+      student = Student.find_by!(email: current_user.email)
+    else
+      student = @student
+    end
+
+    StudentReportService.queue(student)
+
+    redirect_back(
+      fallback_location: root_path,
+      notice: "Report generation has been queued successfully."
+    )
+  end
+
+  def generate_all_reports
+    StudentReportService.queue_all
+
+    redirect_to students_path,
+                notice: "Report generation has been queued successfully."
+>>>>>>> Stashed changes
   end
 
   # Private methods
