@@ -127,7 +127,7 @@ class Api::V1::StudentsController < ApiController
   end
 
   def generate_report
-    StudentReportService.queue(student)
+    StudentReportService.queue(@student)
 
     render json: {
     success: true,
