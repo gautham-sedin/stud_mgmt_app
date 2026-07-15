@@ -6,10 +6,10 @@ class Api::V1::TeachersController < ApiController
     teachers = User.teacher.includes(:students)
 
     if params[:course].present?
-      teachers = teachers.joins(:students)
-                          .where(students: { course: params[:course] })
-                          .distinct
-                          .includes(:students)
+      teachers = teachers
+                    .joins(:students)
+                    .where(students: { course: params[:course] })
+                    .distinct
     end
 
     render json: teachers.map { |teacher|
