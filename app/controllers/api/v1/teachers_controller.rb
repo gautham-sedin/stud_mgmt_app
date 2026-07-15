@@ -3,17 +3,22 @@ class Api::V1::TeachersController < ApiController
   before_action :set_teacher, only: [ :show, :update, :destroy ]
 
   def index
-    teachers = User.teacher
+    teachers = User.teacher.includes(:students)
+
     if params[:course].present?
-      teachers = teachers.joins(:students).where(students: { course: params[:course] }).distinct
+      teachers = teachers.joins(:students)
+                          .where(students: { course: params[:course] })
+                          .distinct
+                          .includes(:students)
     end
+
     render json: teachers.map { |teacher|
       {
         id: teacher.id,
         name: teacher.name,
         email: teacher.email,
         role: teacher.role,
-        total_students: teacher.students.count
+        total_students: teacher.students.size
       }
     }, status: :ok
   end
