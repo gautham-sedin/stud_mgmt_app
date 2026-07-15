@@ -17,10 +17,6 @@ class Api::V1::StudentsController < ApiController
       students = students.by_course(params[:course])
     end
 
-    if params[:grade].present?
-      students = students.by_grade(params[:grade])
-    end
-
     render json: students.map { |student|
       {
         id: student.id,

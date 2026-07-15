@@ -34,18 +34,6 @@ class Student < ApplicationRecord
     where(course: course_name)
   }
 
-  scope :by_grade, ->(grade) {
-    case grade.upcase
-    when "A" then where(marks: 80..100)
-    when "B" then where(marks: 70..79)
-    when "C" then where(marks: 60..69)
-    when "D" then where(marks: 50..59)
-    when "E" then where(marks: 35..49)
-    when "F" then where(marks: 0..34)
-    else none
-    end
-  }
-
   validates :name, presence: true
 
   validates :email,
