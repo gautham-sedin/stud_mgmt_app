@@ -2,7 +2,17 @@ Rails.application.routes.draw do
   devise_for :users
   root "home#index"
 
-  resources :students
+  resources :students do
+    member do
+      delete :remove_profile_photo
+    end
+
+    member do
+      delete "documents/:attachment_id",
+            action: :remove_document,
+            as: :remove_document
+    end
+  end
 
   resources :users, only: [ :index ]
 
