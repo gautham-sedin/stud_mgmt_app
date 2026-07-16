@@ -27,10 +27,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_062008) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.integer "student_user_id"
-    t.string "grade"
     t.index ["email"], name: "index_students_on_email", unique: true
-    t.index ["student_user_id"], name: "index_students_on_student_user_id"
     t.index ["user_id"], name: "index_students_on_user_id"
   end
 
@@ -44,11 +41,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_062008) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 1, null: false
     t.string "name"
-    t.string "subject"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "students", "users"
-  add_foreign_key "students", "users", column: "student_user_id"
 end
