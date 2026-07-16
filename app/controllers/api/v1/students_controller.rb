@@ -13,6 +13,10 @@ class Api::V1::StudentsController < ApiController
       students = students.search(params[:name])
     end
 
+    if params[:grade].present?
+      students = students.search(params[:grade])
+    end
+
     if params[:course].present?
       students = students.by_course(params[:course])
     end
