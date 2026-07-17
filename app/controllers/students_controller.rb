@@ -62,7 +62,7 @@ class StudentsController < ApplicationController
           else
             current_user.students.count
           end
-          
+
         format.html do
           redirect_to @student, notice: "Student created successfully."
         end
@@ -142,7 +142,7 @@ class StudentsController < ApplicationController
 
     @student.destroy
 
-    @student_count = 
+    @student_count =
         if current_user.admin?
           Student.count
         else
