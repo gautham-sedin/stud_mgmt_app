@@ -100,12 +100,11 @@ class StudentsController < ApplicationController
     Rails.logger.info @student.inspect
     pdf = StudentReportPdfService.new(@student).generate
 
-<<<<<<< Updated upstream
     send_data pdf,
               filename: "#{@student.name.parameterize}_report.pdf",
               type: "application/pdf",
               disposition: "attachment"
-=======
+
     unless student.report_card.attached?
       redirect_back(
         fallback_location: root_path,
@@ -140,7 +139,6 @@ class StudentsController < ApplicationController
 
     redirect_to students_path,
                 notice: "Report generation has been queued successfully."
->>>>>>> Stashed changes
   end
 
   # Private methods
