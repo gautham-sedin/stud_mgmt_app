@@ -42,7 +42,7 @@ class Student < ApplicationRecord
     where(course: course_name)
   }
 
-  scope :by_grade, ->(grade) {
+    scope :by_grade, ->(grade) {
     case grade.upcase
     when "A" then where(marks: 80..100)
     when "B" then where(marks: 70..79)

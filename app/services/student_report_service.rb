@@ -1,6 +1,6 @@
 class StudentReportService
   def self.queue(student)
-    GenerateStudentReportJob.perform_later(student.id)  
+    GenerateStudentReportJob.perform_later(student.id)
   end
 
   def self.queue_all

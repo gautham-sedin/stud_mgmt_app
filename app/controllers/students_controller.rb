@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :require_teacher_or_admin!, except: [ 
+  before_action :require_teacher_or_admin!, except: [
     :show,
     :generate_report,
     :download_report
@@ -67,7 +67,7 @@ class StudentsController < ApplicationController
           else
             current_user.students.count
           end
-          
+
         format.html do
           redirect_to @student, notice: "Student created successfully."
         end
@@ -147,7 +147,7 @@ class StudentsController < ApplicationController
 
     @student.destroy
 
-    @student_count = 
+    @student_count =
         if current_user.admin?
           Student.count
         else
@@ -219,7 +219,6 @@ class StudentsController < ApplicationController
 
     redirect_to students_path,
                 notice: "Report generation has been queued successfully."
-                
   end
 
   # Private methods
