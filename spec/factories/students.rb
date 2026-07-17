@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :student do
-    association :user, factory: [:user, :teacher]
+    association :user, factory: [ :user, :teacher ]
 
     sequence(:name) do |n|
       "Student #{n}"
@@ -32,7 +32,7 @@ FactoryBot.define do
 
     trait :with_student_user do
       association :student_user,
-                  factory: [:user, :student]
+                  factory: [ :user, :student ]
     end
   end
 end

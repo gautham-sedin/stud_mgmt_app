@@ -157,5 +157,4 @@ RSpec.describe StudentNotificationService, type: :service do
         .to have_received(:deliver_now)
     end
   end
-
 end

@@ -121,7 +121,7 @@ RSpec.describe "API V1 Teachers Students", type: :request do
 
         expect(body["errors"])
           .to eq(
-            ["Access denied. You can only view your own students."]
+            [ "Access denied. You can only view your own students." ]
           )
       end
     end
@@ -141,7 +141,7 @@ RSpec.describe "API V1 Teachers Students", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Teacher not found"])
+          .to eq([ "Teacher not found" ])
       end
     end
   end

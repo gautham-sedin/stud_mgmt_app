@@ -26,7 +26,7 @@ RSpec.describe TeacherMailer, type: :mailer do
 
     it "sends the email to the assigned teacher" do
       expect(mail.to)
-        .to eq([teacher.email])
+        .to eq([ teacher.email ])
     end
 
     it "has the correct dynamic subject" do
@@ -52,7 +52,7 @@ RSpec.describe TeacherMailer, type: :mailer do
 
     it "sends the email to the assigned teacher" do
       expect(mail.to)
-        .to eq([teacher.email])
+        .to eq([ teacher.email ])
     end
 
     it "has the correct dynamic subject" do

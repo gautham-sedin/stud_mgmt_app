@@ -48,7 +48,6 @@ RSpec.describe StudentReportPdfService, type: :service do
       expect(pdf.bytesize)
         .to be > 100
     end
-    
   end
 
   describe "#generate when the student has no teacher" do

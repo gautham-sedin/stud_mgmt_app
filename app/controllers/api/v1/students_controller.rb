@@ -31,9 +31,17 @@ class Api::V1::StudentsController < ApiController
         current_api_user.students
       end
 
-    students = students.search(params[:name]) if params[:name].present?
-    students = students.by_course(params[:course]) if params[:course].present?
-    students = students.by_grade(params[:grade]) if params[:grade].present?
+    if params[:name].present?
+      students = students.search(params[:name])
+    end
+
+    if params[:grade].present?
+      students = students.search(params[:grade])
+    end
+
+    if params[:course].present?
+      students = students.by_course(params[:course])
+    end
 
     render json: students.map { |student|
       {
@@ -155,7 +163,7 @@ class Api::V1::StudentsController < ApiController
   def report
     unless @student.report_card.attached?
       return render json: {
-        errors: ["Report card has not been generated yet."]
+        errors: [ "Report card has not been generated yet." ]
       }, status: :not_found
     end
 
@@ -182,7 +190,7 @@ class Api::V1::StudentsController < ApiController
     return if @student.present?
 
     render json: {
-      errors: ["Student not found."]
+      errors: [ "Student not found." ]
     }, status: :not_found
   end
 
@@ -205,7 +213,7 @@ class Api::V1::StudentsController < ApiController
     return if current_api_user.admin? || current_api_user.teacher?
 
     render json: {
-      errors: ["Access denied. Teachers and Admins only."]
+      errors: [ "Access denied. Teachers and Admins only." ]
     }, status: :forbidden
   end
 
@@ -215,7 +223,7 @@ class Api::V1::StudentsController < ApiController
               current_api_user.student?
 
     render json: {
-      errors: ["Access denied."]
+      errors: [ "Access denied." ]
     }, status: :forbidden
   end
 
@@ -223,7 +231,7 @@ class Api::V1::StudentsController < ApiController
     return if current_api_user.admin?
 
     render json: {
-      errors: ["Only administrators can perform this action."]
+      errors: [ "Only administrators can perform this action." ]
     }, status: :forbidden
   end
 end

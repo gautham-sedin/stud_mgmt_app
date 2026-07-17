@@ -1,7 +1,6 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-
   authenticate :user, lambda { |user| user.admin? } do
     mount Sidekiq::Web => "/sidekiq"
   end
@@ -40,9 +39,8 @@ Rails.application.routes.draw do
         resources :students, only: [ :index, :create ], module: :teachers
       end
 
-      resources :students, 
+      resources :students,
                 only: [ :index, :show, :create, :update, :destroy ] do
-
         member do
           post :generate_report
           get :report
@@ -52,7 +50,6 @@ Rails.application.routes.draw do
           post :generate_all_reports
         end
       end
-      
     end
   end
 end

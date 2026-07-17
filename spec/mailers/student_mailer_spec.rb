@@ -25,7 +25,7 @@ RSpec.describe StudentMailer, type: :mailer do
 
     it "sends the email to the student" do
       expect(mail.to)
-        .to eq([student.email])
+        .to eq([ student.email ])
     end
 
     it "has the correct subject" do
@@ -46,7 +46,7 @@ RSpec.describe StudentMailer, type: :mailer do
 
     it "sends the email to the student" do
       expect(mail.to)
-        .to eq([student.email])
+        .to eq([ student.email ])
     end
 
     it "has the correct dynamic subject" do
@@ -72,7 +72,7 @@ RSpec.describe StudentMailer, type: :mailer do
 
     it "sends the email to the student" do
       expect(mail.to)
-        .to eq([student.email])
+        .to eq([ student.email ])
     end
 
     it "has the correct subject" do
@@ -93,7 +93,7 @@ RSpec.describe StudentMailer, type: :mailer do
 
     it "sends the email to the student" do
       expect(mail.to)
-        .to eq([student.email])
+        .to eq([ student.email ])
     end
 
     it "has the correct subject" do
@@ -105,5 +105,5 @@ RSpec.describe StudentMailer, type: :mailer do
       expect(mail.body.encoded)
         .to include(student.name)
     end
-  end  
+  end
 end

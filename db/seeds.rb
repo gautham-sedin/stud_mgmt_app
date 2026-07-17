@@ -160,20 +160,20 @@ puts "===================================="
 
 puts "Admin:"
 puts "Email    : admin@studentapp.com"
-puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
+puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 
 puts ""
 puts "Teachers:"
 teachers.each do |teacher|
   puts "Email    : #{teacher.email} (Name: #{teacher.name})"
 end
-puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
+puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 
 puts ""
 puts "Students Sample Login:"
 sample_student = Student.first
 if sample_student
   puts "Email    : #{sample_student.email} (Name: #{sample_student.name})"
-  puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
+  puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
 end
 puts "===================================="

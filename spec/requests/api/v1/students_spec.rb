@@ -250,7 +250,7 @@ RSpec.describe "API V1 Students", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Access denied. Teachers and Admins only."])
+          .to eq([ "Access denied. Teachers and Admins only." ])
       end
     end
   end
@@ -360,7 +360,6 @@ RSpec.describe "API V1 Students", type: :request do
   end
 
   describe "DELETE /api/v1/students/:id" do
-
     context "when logged in as admin" do
       it "deletes the student" do
         expect do
@@ -418,7 +417,7 @@ RSpec.describe "API V1 Students", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Student not found."])
+          .to eq([ "Student not found." ])
       end
     end
   end
@@ -538,7 +537,7 @@ RSpec.describe "API V1 Students", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Report card has not been generated yet."])
+          .to eq([ "Report card has not been generated yet." ])
       end
     end
 

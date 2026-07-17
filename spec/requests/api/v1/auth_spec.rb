@@ -72,7 +72,7 @@ RSpec.describe "API Authentication", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Invalid email or password"])
+          .to eq([ "Invalid email or password" ])
       end
 
       it "does not return a token" do
@@ -101,7 +101,7 @@ RSpec.describe "API Authentication", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Invalid email or password"])
+          .to eq([ "Invalid email or password" ])
       end
 
       it "does not return a token" do
@@ -111,6 +111,5 @@ RSpec.describe "API Authentication", type: :request do
           .to be_nil
       end
     end
-
   end
 end

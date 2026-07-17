@@ -194,7 +194,7 @@ RSpec.describe "API V1 Teachers", type: :request do
         body = JSON.parse(response.body)
 
         expect(body["errors"])
-          .to eq(["Teacher not found"])
+          .to eq([ "Teacher not found" ])
       end
     end
   end
