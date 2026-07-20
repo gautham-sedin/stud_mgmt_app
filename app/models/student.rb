@@ -94,9 +94,6 @@ class Student < ApplicationRecord
   def validate_profile_photo
     return unless profile_photo.attached?
 
-    Rails.logger.debug "Content Type: #{profile_photo.content_type}"
-    puts "Content Type: #{profile_photo.content_type}"
-
     unless profile_photo.content_type.in?(%w[image/jpeg image/png])
       errors.add(:profile_photo, "must be a JPG, JPEG or PNG file")
     end
