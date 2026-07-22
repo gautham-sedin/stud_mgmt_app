@@ -36,7 +36,7 @@ class Api::V1::StudentsController < ApiController
     end
 
     if params[:grade].present?
-      students = students.search(params[:grade])
+      students = students.by_grade(params[:grade])
     end
 
     if params[:course].present?
