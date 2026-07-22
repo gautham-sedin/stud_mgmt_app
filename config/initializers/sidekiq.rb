@@ -3,7 +3,8 @@ Sidekiq.configure_server do |config|
     url: ENV.fetch(
       "REDIS_URL",
       "redis://localhost:6379"
-    )
+    ),
+    size: ENV.fetch("SIDEKIQ_SERVER_POOL_SIZE") { 10 }.to_i
   }
 end
 
@@ -12,6 +13,7 @@ Sidekiq.configure_client do |config|
     url: ENV.fetch(
       "REDIS_URL",
       "redis://localhost:6379"
-    )
+    ),
+    size: ENV.fetch("SIDEKIQ_CLIENT_POOL_SIZE") { 5 }.to_i
   }
 end

@@ -55,7 +55,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_01_112414) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "student_user_id"
     t.index ["email"], name: "index_students_on_email", unique: true
+    t.index ["student_user_id"], name: "index_students_on_student_user_id"
     t.index ["user_id"], name: "index_students_on_user_id"
   end
 
@@ -76,4 +78,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_01_112414) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "students", "users"
+  add_foreign_key "students", "users", column: "student_user_id"
 end

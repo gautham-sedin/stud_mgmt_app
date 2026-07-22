@@ -18,9 +18,9 @@ class StudentsController < ApplicationController
   def index
     @students =
       if current_user.admin?
-        Student.all
+        Student.includes(:user)
       else
-        current_user.students
+        current_user.students.includes(:user)
       end
 
     if params[:search].present?

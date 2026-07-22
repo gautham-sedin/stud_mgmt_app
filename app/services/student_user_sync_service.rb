@@ -36,7 +36,7 @@ class StudentUserSyncService
   end
 
   def destroy_user
-    user = @student.user
+    user = User.find_by(email: @student.email)
 
     user.destroy if user&.student?
   end

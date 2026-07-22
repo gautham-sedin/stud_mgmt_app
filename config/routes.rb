@@ -3,7 +3,6 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   if Rails.env.production?
     Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-
       ActiveSupport::SecurityUtils.secure_compare(
         username,
         ENV["SIDEKIQ_USERNAME"]
