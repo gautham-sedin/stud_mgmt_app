@@ -4,15 +4,15 @@ class StudentNotificationService
   end
 
   def self.send_teacher_assignment_notification(student)
-    StudentMailer.teacher_assigned_email(student).deliver_now
+    StudentMailer.teacher_assigned_email(student).deliver_later
 
-    TeacherMailer.new_student(student).deliver_now
+    TeacherMailer.new_student(student).deliver_later
   end
 
   def self.send_attachment_upload_notifications(student)
-    StudentMailer.attachments_uploaded_email(student).deliver_now
+    StudentMailer.attachments_uploaded_email(student).deliver_later
 
-    TeacherMailer.student_uploaded_attachments(student).deliver_now
+    TeacherMailer.student_uploaded_attachments(student).deliver_later
   end
 
   # def self.send_marks_published_notification(student)

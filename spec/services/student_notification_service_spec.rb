@@ -82,7 +82,7 @@ RSpec.describe StudentNotificationService, type: :service do
         .and_return(student_delivery)
 
       allow(student_delivery)
-        .to receive(:deliver_now)
+        .to receive(:deliver_later)
 
       allow(TeacherMailer)
         .to receive(:new_student)
@@ -90,7 +90,7 @@ RSpec.describe StudentNotificationService, type: :service do
         .and_return(teacher_delivery)
 
       allow(teacher_delivery)
-        .to receive(:deliver_now)
+        .to receive(:deliver_later)
     end
 
     it "sends emails to both the student and teacher" do
@@ -101,14 +101,14 @@ RSpec.describe StudentNotificationService, type: :service do
         .with(student)
 
       expect(student_delivery)
-        .to have_received(:deliver_now)
+        .to have_received(:deliver_later)
 
       expect(TeacherMailer)
         .to have_received(:new_student)
         .with(student)
 
       expect(teacher_delivery)
-        .to have_received(:deliver_now)
+        .to have_received(:deliver_later)
     end
   end
 
@@ -128,7 +128,7 @@ RSpec.describe StudentNotificationService, type: :service do
         .and_return(student_delivery)
 
       allow(student_delivery)
-        .to receive(:deliver_now)
+        .to receive(:deliver_later)
 
       allow(TeacherMailer)
         .to receive(:student_uploaded_attachments)
@@ -136,7 +136,7 @@ RSpec.describe StudentNotificationService, type: :service do
         .and_return(teacher_delivery)
 
       allow(teacher_delivery)
-        .to receive(:deliver_now)
+        .to receive(:deliver_later)
     end
 
     it "sends attachment upload notifications to both student and teacher" do
@@ -147,14 +147,14 @@ RSpec.describe StudentNotificationService, type: :service do
         .with(student)
 
       expect(student_delivery)
-        .to have_received(:deliver_now)
+        .to have_received(:deliver_later)
 
       expect(TeacherMailer)
         .to have_received(:student_uploaded_attachments)
         .with(student)
 
       expect(teacher_delivery)
-        .to have_received(:deliver_now)
+        .to have_received(:deliver_later)
     end
   end
 end

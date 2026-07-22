@@ -33,6 +33,8 @@ class StudentsController < ApplicationController
 
     @students = @students.order(created_at: :desc)
 
+    @pagy, @students = pagy(@students)
+
     if turbo_frame_request?
       render partial: "student_table"
     end
@@ -167,7 +169,7 @@ class StudentsController < ApplicationController
   end
 
   def remove_profile_photo
-    @student.profile_photo.purge
+    @student.profile_photo.purge_later
 
     redirect_to @student, notice: "Profile photo deleted successfully."
   end
@@ -177,7 +179,7 @@ class StudentsController < ApplicationController
 
     redirect_to @student, alert: "Document not found." and return unless attachment
 
-    attachment.purge
+    attachment.purge_later
 
     redirect_to @student, notice: "Document deleted successfully."
   end
@@ -225,8 +227,26 @@ class StudentsController < ApplicationController
   private
 
   def set_student
-    scope = (current_user.admin? || current_user.student?) ? Student.all : current_user.students
-    @student = scope.find(params[:id])
+    if current_user.student? && action_name.in?(%w[generate_report download_report])
+      @student = Student.find_by!(email: current_user.email)
+    else
+      scope = if current_user.admin?
+                Student.all
+              elsif current_user.teacher?
+                current_user.students
+              elsif current_user.student?
+                Student.where(email: current_user.email)
+              else
+                Student.none
+              end
+      @student = scope.find(params[:id])
+    end
+  rescue ActiveRecord::RecordNotFound
+    if current_user.student?
+      redirect_to root_path, alert: "Access denied. You can only view your own student profile." and return
+    else
+      raise ActiveRecord::RecordNotFound
+    end
   end
 
   def student_params

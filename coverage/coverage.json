@@ -5,9 +5,9 @@
     "simplecov_version": "1.0.0",
     "command_name": "RSpec",
     "project_name": "Stud mgmt app",
-    "timestamp": "2026-07-22T07:12:41.395+00:00",
+    "timestamp": "2026-07-22T07:42:21.581+00:00",
     "root": "/home/gautham/Sedin/Training/stud_mgmt_app",
-    "commit": "3e2a78ce3210f44df537f221c2a30b5f40d00fe3",
+    "commit": "4a182cba73b5d7cb8c31302d6b27a1b4a56a8d81",
     "primary_coverage": "line",
     "line_coverage": true,
     "branch_coverage": false,
@@ -15,12 +15,12 @@
   },
   "total": {
     "lines": {
-      "covered": 451,
-      "missed": 25,
-      "omitted": 763,
-      "total": 476,
-      "percent": 94.74789915966386,
-      "strength": 10.546218487394958
+      "covered": 462,
+      "missed": 28,
+      "omitted": 771,
+      "total": 490,
+      "percent": 94.28571428571429,
+      "strength": 10.4
     }
   },
   "coverage": {
@@ -1032,6 +1032,7 @@
     "app/controllers/application_controller.rb": {
       "source": [
         "class ApplicationController < ActionController::Base",
+        "  include Pagy::Backend",
         "  before_action :authenticate_user!",
         "  before_action :configure_permitted_parameters, if: :devise_controller?",
         "",
@@ -1045,21 +1046,22 @@
         "",
         "  def require_admin!",
         "    return if current_user.admin?",
-        "    redirect_to root_path, alert: \"Access denied.\"",
+        "    redirect_to root_path, alert: \"Access denied.\" and return",
         "  end",
         "",
         "  def require_teacher!",
         "    return if current_user.teacher?",
-        "    redirect_to root_path, alert: \"Access denied.\"",
+        "    redirect_to root_path, alert: \"Access denied.\" and return",
         "  end",
         "",
         "  def require_teacher_or_admin!",
         "    return if current_user.admin? || current_user.teacher?",
-        "    redirect_to root_path, alert: \"Access denied. Student account do not have access to this page.\"",
+        "    redirect_to root_path, alert: \"Access denied. Student account do not have access to this page.\" and return",
         "  end",
         "end"
       ],
       "lines": [
+        1,
         1,
         1,
         1,
@@ -1088,11 +1090,11 @@
         null,
         null
       ],
-      "lines_covered_percent": 87.5,
-      "covered_lines": 14,
+      "lines_covered_percent": 88.23529411764706,
+      "covered_lines": 15,
       "missed_lines": 2,
       "omitted_lines": 11,
-      "total_lines": 16
+      "total_lines": 17
     },
     "app/controllers/home_controller.rb": {
       "source": [
@@ -1248,6 +1250,8 @@
         "",
         "    @students = @students.order(created_at: :desc)",
         "",
+        "    @pagy, @students = pagy(@students)",
+        "",
         "    if turbo_frame_request?",
         "      render partial: \"student_table\"",
         "    end",
@@ -1382,7 +1386,7 @@
         "  end",
         "",
         "  def remove_profile_photo",
-        "    @student.profile_photo.purge",
+        "    @student.profile_photo.purge_later",
         "",
         "    redirect_to @student, notice: \"Profile photo deleted successfully.\"",
         "  end",
@@ -1392,7 +1396,7 @@
         "",
         "    redirect_to @student, alert: \"Document not found.\" and return unless attachment",
         "",
-        "    attachment.purge",
+        "    attachment.purge_later",
         "",
         "    redirect_to @student, notice: \"Document deleted successfully.\"",
         "  end",
@@ -1440,8 +1444,26 @@
         "  private",
         "",
         "  def set_student",
-        "    scope = (current_user.admin? || current_user.student?) ? Student.all : current_user.students",
-        "    @student = scope.find(params[:id])",
+        "    if current_user.student? && action_name.in?(%w[generate_report download_report])",
+        "      @student = Student.find_by!(email: current_user.email)",
+        "    else",
+        "      scope = if current_user.admin?",
+        "                Student.all",
+        "              elsif current_user.teacher?",
+        "                current_user.students",
+        "              elsif current_user.student?",
+        "                Student.where(email: current_user.email)",
+        "              else",
+        "                Student.none",
+        "              end",
+        "      @student = scope.find(params[:id])",
+        "    end",
+        "  rescue ActiveRecord::RecordNotFound",
+        "    if current_user.student?",
+        "      redirect_to root_path, alert: \"Access denied. You can only view your own student profile.\" and return",
+        "    else",
+        "      raise ActiveRecord::RecordNotFound",
+        "    end",
         "  end",
         "",
         "  def student_params",
@@ -1503,15 +1525,17 @@
         2,
         null,
         2,
+        null,
+        2,
         0,
         null,
         null,
         null,
         1,
-        4,
-        2,
-        2,
+        3,
         1,
+        1,
+        0,
         null,
         null,
         null,
@@ -1695,7 +1719,25 @@
         null,
         1,
         29,
-        29,
+        2,
+        null,
+        27,
+        9,
+        18,
+        16,
+        2,
+        2,
+        null,
+        0,
+        null,
+        27,
+        null,
+        null,
+        1,
+        1,
+        null,
+        0,
+        null,
         null,
         null,
         1,
@@ -1720,11 +1762,11 @@
         null,
         null
       ],
-      "lines_covered_percent": 90.0,
-      "covered_lines": 90,
-      "missed_lines": 10,
-      "omitted_lines": 152,
-      "total_lines": 100
+      "lines_covered_percent": 88.39285714285714,
+      "covered_lines": 99,
+      "missed_lines": 13,
+      "omitted_lines": 160,
+      "total_lines": 112
     },
     "app/controllers/users_controller.rb": {
       "source": [
@@ -1754,6 +1796,7 @@
     "app/helpers/application_helper.rb": {
       "source": [
         "module ApplicationHelper",
+        "  include Pagy::Frontend",
         "  COURSE_BADGE_CLASSES = {",
         "    \"Ruby\" => \"bg-danger-subtle text-danger-emphasis\",",
         "    \"Rails\" => \"bg-warning-subtle text-warning-emphasis\",",
@@ -1787,6 +1830,7 @@
       ],
       "lines": [
         1,
+        1,
         null,
         1,
         null,
@@ -1818,11 +1862,11 @@
         null,
         null
       ],
-      "lines_covered_percent": 92.3076923076923,
-      "covered_lines": 12,
+      "lines_covered_percent": 92.85714285714286,
+      "covered_lines": 13,
       "missed_lines": 1,
       "omitted_lines": 18,
-      "total_lines": 13
+      "total_lines": 14
     },
     "app/helpers/home_helper.rb": {
       "source": [
@@ -2473,15 +2517,15 @@
         "  end",
         "",
         "  def self.send_teacher_assignment_notification(student)",
-        "    StudentMailer.teacher_assigned_email(student).deliver_now",
+        "    StudentMailer.teacher_assigned_email(student).deliver_later",
         "",
-        "    TeacherMailer.new_student(student).deliver_now",
+        "    TeacherMailer.new_student(student).deliver_later",
         "  end",
         "",
         "  def self.send_attachment_upload_notifications(student)",
-        "    StudentMailer.attachments_uploaded_email(student).deliver_now",
+        "    StudentMailer.attachments_uploaded_email(student).deliver_later",
         "",
-        "    TeacherMailer.student_uploaded_attachments(student).deliver_now",
+        "    TeacherMailer.student_uploaded_attachments(student).deliver_later",
         "  end",
         "",
         "  # def self.send_marks_published_notification(student)",
@@ -2792,12 +2836,12 @@
   "groups": {
     "Controllers": {
       "lines": {
-        "covered": 273,
-        "missed": 23,
-        "omitted": 518,
-        "total": 296,
-        "percent": 92.22972972972973,
-        "strength": 5.493243243243243
+        "covered": 283,
+        "missed": 26,
+        "omitted": 526,
+        "total": 309,
+        "percent": 91.58576051779936,
+        "strength": 5.504854368932039
       },
       "files": [
         "app/controllers/api/v1/auth_controller.rb",
@@ -2854,12 +2898,12 @@
     },
     "Helpers": {
       "lines": {
-        "covered": 15,
+        "covered": 16,
         "missed": 1,
         "omitted": 21,
-        "total": 16,
-        "percent": 93.75,
-        "strength": 7.125
+        "total": 17,
+        "percent": 94.11764705882354,
+        "strength": 6.764705882352941
       },
       "files": [
         "app/helpers/application_helper.rb",
