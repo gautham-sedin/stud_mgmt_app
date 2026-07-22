@@ -75,7 +75,7 @@ class Api::V1::Teachers::StudentsController < ApiController
 
   rescue ArgumentError, TypeError
     render json: {
-      errors: ["Invalid teacher id."]
+      errors: [ "Invalid teacher id." ]
     }, status: :bad_request
   end
 end

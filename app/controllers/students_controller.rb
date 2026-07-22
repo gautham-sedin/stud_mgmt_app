@@ -232,13 +232,13 @@ class StudentsController < ApplicationController
     else
       scope = if current_user.admin?
                 Student.all
-              elsif current_user.teacher?
+      elsif current_user.teacher?
                 current_user.students
-              elsif current_user.student?
+      elsif current_user.student?
                 Student.where(email: current_user.email)
-              else
+      else
                 Student.none
-              end
+      end
       @student = scope.find(params[:id])
     end
   rescue ActiveRecord::RecordNotFound
