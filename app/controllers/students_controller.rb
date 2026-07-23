@@ -106,9 +106,23 @@ class StudentsController < ApplicationController
 
   def update
     attachments_uploaded = attachments_uploaded?
+    update_params = student_params
+
+    # has_many_attached assignment REPLACES the whole collection. The edit form
+    # always submits the documents file field, and browsers send a blank entry
+    # when no new file is chosen, so without this merge every save would purge
+    # previously uploaded documents. Merging in the existing blobs keeps them.
+    if update_params.key?(:documents)
+      new_documents = Array(update_params[:documents]).select(&:present?)
+      update_params[:documents] = @student.documents.map(&:blob) + new_documents
+    end
+
+    # has_one_attached assignment with a blank value purges the current
+    # attachment, so only reassign profile_photo when a real file was uploaded.
+    update_params.delete(:profile_photo) unless update_params[:profile_photo].present?
 
     respond_to do |format|
-      if @student.update(student_params)
+      if @student.update(update_params)
 
         if attachments_uploaded
           StudentNotificationService.send_attachment_upload_notifications(@student)
@@ -267,6 +281,7 @@ class StudentsController < ApplicationController
   end
 
   def attachments_uploaded?
-    params[:student][:profile_photo].present? || params[:student][:documents].present?
+    params[:student][:profile_photo].present? ||
+      Array(params[:student][:documents]).any?(&:present?)
   end
 end
