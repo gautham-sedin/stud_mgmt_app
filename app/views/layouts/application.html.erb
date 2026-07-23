@@ -28,7 +28,9 @@
     <%= render "shared/navbar" %>
     <main class="container py-4 flex-grow-1">
 
-      <%= render "shared/flash" %>
+      <div id="flash_messages">
+        <%= render "shared/flash" %>
+      </div>
 
       <%= yield %>
     </main>

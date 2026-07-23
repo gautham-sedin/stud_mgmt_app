@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include Pagy::Frontend
   COURSE_BADGE_CLASSES = {
     "Ruby" => "bg-danger-subtle text-danger-emphasis",
     "Rails" => "bg-warning-subtle text-warning-emphasis",

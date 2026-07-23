@@ -32,7 +32,12 @@ class HomeController < ApplicationController
 
     @students_per_teacher =
       User.teacher
-          .includes(:students)
+          .left_joins(:students)
+          .select(
+            "users.*,
+            COUNT(students.id) AS students_count"
+          )
+          .group("users.id")
 
     @recent_students =
       Student

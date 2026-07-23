@@ -7,8 +7,26 @@
     </p>
   </div>
 
-  <%= link_to "Add Student",
-      new_student_path,
-      class: "btn btn-dark" %>
+  <div class="d-flex gap-2">
+
+    <% if current_user.admin? %>
+
+      <%= button_to "Generate All Report Cards",
+          generate_all_reports_students_path,
+          method: :post,
+          class: "btn btn-outline-warning",
+          form: {
+            data: {
+              turbo_confirm: "Generate report cards for all students?"
+            }
+          } %>
+
+    <% end %>
+
+    <%= link_to "Add Student",
+        new_student_path,
+        class: "btn btn-dark" %>
+
+  </div>
 
 </div>

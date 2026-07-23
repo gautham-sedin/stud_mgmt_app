@@ -1,3 +1,13 @@
 <%= render "header" %>
+
 <%= render "search_form" %>
+
+<%= turbo_frame_tag "student_form" do %>
+  <%= render "quick_form",
+      student: Student.new %>
+<% end %>
+
+<%= render "student_count",
+    student_count: @students.count %>
+
 <%= render "student_table" %>

@@ -1,0 +1,142 @@
+<% student = local_assigns[:student] || Student.new %>
+
+<div id="quick_student_form" class="card shadow-sm border-0 mb-4" data-controller="student-form">
+
+  <div class="card-body">
+
+    <h5 class="fw-bold mb-3">
+        <%= student.persisted? ? "Edit Student" : "Quick Add Student" %>
+    </h5>
+
+    <% if student.errors.any? %>
+      <div class="alert alert-danger py-2 px-3 mb-3">
+        <h6 class="fw-bold mb-1">Please fix the following errors:</h6>
+        <ul class="mb-0 ps-3">
+          <% student.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: student do |form| %>
+
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+          <%= form.label :name, class: "form-label fw-semibold" %>
+
+          <%= form.text_field :name,
+                class: "form-control",
+                placeholder: "Enter student name",
+                data: {
+                  student_form_target: "name requiredField",
+                  action: "input->student-form#check"
+                } %>
+          
+          <div class="form-text">
+            Character count: <span class="fw-semibold" data-student-form-target="counter">0</span>
+          </div>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+          <%= form.label :email, class: "form-label fw-semibold" %>
+
+          <%= form.email_field :email,
+                class: "form-control",
+                placeholder: "Enter email",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <%= form.label :age, class: "form-label fw-semibold" %>
+
+          <%= form.number_field :age,
+                class: "form-control",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <%= form.label :course, class: "form-label fw-semibold" %>
+
+          <%= form.select :course,
+                Student::COURSES,
+                { prompt: "Select Course" },
+                class: "form-select",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "change->student-form#check"
+                } %>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <%= form.label :marks, class: "form-label fw-semibold" %>
+
+          <%= form.number_field :marks,
+                class: "form-control" %>
+
+        </div>
+
+        <% if current_user.admin? %>
+
+          <div class="col-md-6 mb-3">
+
+            <%= form.label :user_id,
+                  "Teacher",
+                  class: "form-label fw-semibold" %>
+
+            <%= form.collection_select :user_id,
+                  User.teacher.order(:name),
+                  :id,
+                  :name,
+                  { prompt: "Select Teacher" },
+                  class: "form-select" %>
+
+          </div>
+
+        <% end %>
+
+        <div class="col-md-6 mb-3">
+
+          <%= form.label :city, class: "form-label fw-semibold" %>
+
+          <%= form.text_field :city,
+                class: "form-control",
+                placeholder: "Enter City",
+                data: {
+                  student_form_target: "requiredField",
+                  action: "input->student-form#check"
+                } %>
+
+        </div>
+
+      </div>
+            
+        <%= form.submit(
+            form.object.persisted? ? "Update Student" : "Add Student",
+            class: "btn btn-dark",
+            data: {
+              student_form_target: "submit"
+            }
+        ) %>
+
+    <% end %>
+
+  </div>
+
+</div>

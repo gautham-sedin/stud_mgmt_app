@@ -89,6 +89,30 @@
             <span class="text-secondary small"><%= @student.user&.email %></span>
           </div>
         </div>
+        
+        <hr class="my-4">
+        <div class="text-center">
+
+          <h5 class="fw-bold mb-3">
+            Report Card
+          </h5>
+          
+          <p class="text-secondary mb-4">
+            Generate your latest report card and download it once it is ready.
+          </p>
+          <div class="d-flex justify-content-center gap-3">
+
+            <%= button_to "Generate Report Card",
+                generate_report_student_path(@student),
+                method: :post,
+                class: "btn btn-warning px-4" %>
+
+            <%= link_to "Download Report Card",
+                download_report_student_path(@student),
+                class: "btn btn-success px-4" %>
+
+          </div>
+        </div>
 
       </div>
     </div>
