@@ -46,12 +46,10 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
-  config.cache_store = :solid_cache_store
-
-  # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  # Use Sidekiq for background jobs when Redis is available (e.g. REDIS_URL set),
+  # otherwise fall back to Rails' in-process :async adapter so the app still boots
+  # and runs jobs on a standalone Rails+Postgres deployment (no Redis/Sidekiq yet).
+  config.active_job.queue_adapter = ENV["REDIS_URL"].present? ? :sidekiq : :async
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

@@ -8,10 +8,8 @@ development:
 test:
   adapter: test
 
+# No ActionCable channels are used in this app; solid_cable would require its own
+# `cable` database connection that the simplified single-database production.rb
+# doesn't define. async keeps this working without provisioning extra tables.
 production:
-  adapter: solid_cable
-  connects_to:
-    database:
-      writing: cable
-  polling_interval: 0.1.seconds
-  message_retention: 1.day
+  adapter: async
