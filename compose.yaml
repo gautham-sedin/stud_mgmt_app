@@ -23,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: student_management_dev
+      POSTGRES_DB: student_management_development
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:

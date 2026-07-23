@@ -52,9 +52,6 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN SECRET_KEY_BASE_DUMMY=1 DATABASE_URL=postgresql://dummy:dummy@localhost/dummy \
     ./bin/rails assets:precompile
 
-
-
-
 # Final stage for app image
 FROM base
 
