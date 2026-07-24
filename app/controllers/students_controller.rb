@@ -106,9 +106,17 @@ class StudentsController < ApplicationController
 
   def update
     attachments_uploaded = attachments_uploaded?
+    update_params = student_params
+
+    if update_params.key?(:documents)
+      new_documents = Array(update_params[:documents]).select(&:present?)
+      update_params[:documents] = @student.documents.map(&:blob) + new_documents
+    end
+
+    update_params.delete(:profile_photo) unless update_params[:profile_photo].present?
 
     respond_to do |format|
-      if @student.update(student_params)
+      if @student.update(update_params)
 
         if attachments_uploaded
           StudentNotificationService.send_attachment_upload_notifications(@student)
@@ -267,6 +275,7 @@ class StudentsController < ApplicationController
   end
 
   def attachments_uploaded?
-    params[:student][:profile_photo].present? || params[:student][:documents].present?
+    params[:student][:profile_photo].present? ||
+      Array(params[:student][:documents]).any?(&:present?)
   end
 end

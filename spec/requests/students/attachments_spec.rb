@@ -79,4 +79,61 @@ RSpec.describe "Student Attachments", type: :request do
         .to eq("Document not found.")
     end
   end
+
+  describe "PATCH /students/:id with blank attachment fields" do
+    before do
+      student.profile_photo.attach(
+        io: StringIO.new("dummy image"),
+        filename: "profile.png",
+        content_type: "image/png"
+      )
+
+      student.documents.attach(
+        io: StringIO.new("dummy pdf"),
+        filename: "resume.pdf",
+        content_type: "application/pdf"
+      )
+    end
+
+    it "does not purge existing documents or profile photo when the file fields are submitted blank" do
+      expect(student.profile_photo).to be_attached
+      expect(student.documents.count).to eq(1)
+
+      # Simulates the browser submitting the edit form's file fields with no
+      # new file chosen: a blank string for profile_photo and a blank entry
+      # in the documents array.
+      patch student_path(student),
+            params: {
+              student: {
+                city: "Bangalore",
+                profile_photo: "",
+                documents: [ "" ]
+              }
+            }
+
+      student.reload
+
+      expect(student.city).to eq("Bangalore")
+      expect(student.profile_photo).to be_attached
+      expect(student.documents.count).to eq(1)
+      expect(student.documents.first.filename.to_s).to eq("resume.pdf")
+    end
+
+    it "appends new documents without removing the existing ones" do
+      patch student_path(student),
+            params: {
+              student: {
+                documents: [
+                  fixture_file_upload("sample.pdf", "application/pdf")
+                ]
+              }
+            }
+
+      student.reload
+
+      expect(student.documents.count).to eq(2)
+      expect(student.documents.map { |d| d.filename.to_s })
+        .to include("resume.pdf", "sample.pdf")
+    end
+  end
 end
