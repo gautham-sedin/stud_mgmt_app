@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "students_table" do %>
 <div class="card shadow-sm border-0">
 
   <div class="card-body p-0">
@@ -22,72 +23,16 @@
             </tr>
           </thead>
 
-          <tbody>
-
-            <% @students.each do |student| %>
-
-              <tr>
-
-                <td class="fw-semibold">
-                  <%= student.name %>
-                </td>
-
-                <td>
-                  <%= student.email %>
-                </td>
-
-                <td>
-                  <%= student.age %>
-                </td>
-
-                <td>
-                  <span class="badge <%= course_badge_class(student.course) %>">
-                    <%= student.course %>
-                  </span>
-                </td>
-
-                <td>
-                  <%= student.city %>
-                </td>
-
-                <% if admin? %>
-                  <td>
-                    <%= student.user&.name || "Not Assigned" %>
-                  </td>
-                <% end %>
-
-                <td class="text-center">
-
-                  <div class="d-flex justify-content-center gap-2">
-
-                    <%= link_to "View",
-                        student_path(student),
-                        class: "btn btn-sm btn-outline-dark" %>
-
-                    <%= link_to "Edit",
-                        edit_student_path(student),
-                        class: "btn btn-sm btn-outline-primary" %>
-
-                    <%= link_to "Delete",
-                        student_path(student),
-                        data: {
-                          turbo_method: :delete,
-                          turbo_confirm: "Are you sure?"
-                        },
-                        class: "btn btn-sm btn-outline-danger" %>
-
-                  </div>
-
-                </td>
-
-              </tr>
-
-            <% end %>
-
+          <tbody id="students">
+            <%= render @students %>
           </tbody>
 
         </table>
 
+      </div>
+
+      <div class="d-flex justify-content-center py-3 border-top">
+        <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
       </div>
 
     <% else %>
@@ -104,6 +49,9 @@
 
         <%= link_to "Add Student",
             new_student_path,
+            data: {
+              turbo_frame: "_top"
+            },
             class: "btn btn-dark mt-2" %>
 
       </div>
@@ -113,3 +61,4 @@
   </div>
 
 </div>
+<% end %>

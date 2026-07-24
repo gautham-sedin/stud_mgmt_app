@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "Bash(docker info *)",
+      "Bash(ruby -v)",
+      "Bash(wsl.exe -d Ubuntu -- bash -lc \"cd /home/gautham/Sedin/Training/stud_mgmt_app && pwd && docker --version\")",
+      "Bash(wsl.exe -d Ubuntu -- bash -lc \"cd /home/gautham/Sedin/Training/stud_mgmt_app && docker run --rm -v \\\\\"\\\\$\\(pwd\\)\\\\\":/app -w /app ruby:3.4.6-slim bash -c 'apt-get update -qq && apt-get install -y --no-install-recommends build-essential libpq-dev git > /dev/null 2>&1 && bundle lock 2>&1'\")"
+    ]
+  }
+}

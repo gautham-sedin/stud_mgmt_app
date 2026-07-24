@@ -1,8 +1,46 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
+  if Rails.env.production?
+    Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+      ActiveSupport::SecurityUtils.secure_compare(
+        username,
+        ENV["SIDEKIQ_USERNAME"]
+      ) &
+
+      ActiveSupport::SecurityUtils.secure_compare(
+        password,
+        ENV["SIDEKIQ_PASSWORD"]
+      )
+    end
+  end
+
+  mount Sidekiq::Web => "/sidekiq"
+
   devise_for :users
   root "home#index"
+  get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :students
+  resources :students do
+    member do
+      post :generate_report
+      get :download_report
+    end
+
+    collection do
+      post :generate_all_reports
+    end
+
+    member do
+      delete :remove_profile_photo
+    end
+
+    member do
+      delete "documents/:attachment_id",
+            action: :remove_document,
+            as: :remove_document
+    end
+  end
 
   resources :users, only: [ :index ]
 
@@ -14,7 +52,17 @@ Rails.application.routes.draw do
         resources :students, only: [ :index, :create ], module: :teachers
       end
 
-      resources :students, only: [ :index, :show, :create, :update, :destroy ]
+      resources :students,
+                only: [ :index, :show, :create, :update, :destroy ] do
+        member do
+          post :generate_report
+          get :report
+        end
+
+        collection do
+          post :generate_all_reports
+        end
+      end
     end
   end
 end

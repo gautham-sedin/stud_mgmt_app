@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+echo "==> Preparing the database..."
+bundle exec rails db:prepare
+
+if [ "${RUN_DB_SEEDS:-false}" = "true" ]; then
+    echo "==> Loading seed data..."
+    bundle exec rails db:seed
+fi
+
+echo "==> Starting puma..."
+exec bundle exec puma -C config/puma.rb

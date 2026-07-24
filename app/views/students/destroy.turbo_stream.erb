@@ -1,0 +1,9 @@
+<%= turbo_stream.remove @student_dom_id %>
+
+<%= turbo_stream.replace "student_count" do %>
+    <%= render "student_count", student_count: @student_count %>
+<% end %>
+
+<%= turbo_stream.replace "flash_messages" do %>
+    <%= render "shared/flash" %>
+<% end %>

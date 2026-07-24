@@ -1,25 +1,18 @@
 # db/seeds.rb
-
-puts "===================================="
-puts "Cleaning existing data..."
-puts "===================================="
-
-Student.destroy_all
-User.destroy_all
-
-puts "Existing data removed."
+#
+# Idempotent: safe to re-run (e.g. on every deploy with RUN_DB_SEEDS=true) since it
+# uses find_or_create_by! instead of wiping existing data.
 
 puts "===================================="
 puts "Creating Admin..."
 puts "===================================="
 
-admin = User.create!(
-  name: "System Administrator",
-  email: "admin@studentapp.com",
-  password: AppConstants::STUDENT_DEFAULT_PASSWORD,
-  password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
-  role: :admin
-)
+admin = User.find_or_create_by!(email: "admin@studentapp.com") do |user|
+  user.name = "System Administrator"
+  user.password = AppConstants::STUDENT_DEFAULT_PASSWORD
+  user.password_confirmation = AppConstants::STUDENT_DEFAULT_PASSWORD
+  user.role = :admin
+end
 
 puts "Admin created: #{admin.email} (Name: #{admin.name})"
 
@@ -37,13 +30,14 @@ teacher_names = [
 teachers = []
 
 4.times do |index|
-  teachers << User.create!(
-    name: teacher_names[index] || "Teacher #{index + 1}",
-    email: "teacher#{index + 1}@studentapp.com",
-    password: AppConstants::STUDENT_DEFAULT_PASSWORD,
-    password_confirmation: AppConstants::STUDENT_DEFAULT_PASSWORD,
-    role: :teacher
-  )
+  teacher_email = "teacher#{index + 1}@studentapp.com"
+
+  teachers << User.find_or_create_by!(email: teacher_email) do |user|
+    user.name = teacher_names[index] || "Teacher #{index + 1}"
+    user.password = AppConstants::STUDENT_DEFAULT_PASSWORD
+    user.password_confirmation = AppConstants::STUDENT_DEFAULT_PASSWORD
+    user.role = :teacher
+  end
 end
 
 teachers.each do |teacher|
@@ -103,26 +97,24 @@ last_names = %w[
 ]
 
 student_counter = 1
+students_per_teacher = 3
 
 teachers.each do |teacher|
-  number_of_students = rand(2..5)
-
-  number_of_students.times do
+  students_per_teacher.times do
     first_name = first_names.sample
     last_name = last_names.sample
     student_name = "#{first_name} #{last_name}"
     student_email = "student#{student_counter}@example.com"
 
-    # Create the Student profile
-    Student.create!(
-      name: student_name,
-      email: student_email,
-      age: rand(18..25),
-      course: courses.sample,
-      city: cities.sample,
-      marks: rand(20..100),
-      user: teacher
-    )
+    # Create the Student profile (idempotent: re-running seeds won't duplicate)
+    Student.find_or_create_by!(email: student_email) do |student|
+      student.name = student_name
+      student.age = rand(18..25)
+      student.course = courses.sample
+      student.city = cities.sample
+      student.marks = rand(20..100)
+      student.user = teacher
+    end
 
     # Safe fallback creation of User login record for the Student:
     # If the student model callbacks have already been written, they will auto-create
@@ -160,20 +152,20 @@ puts "===================================="
 
 puts "Admin:"
 puts "Email    : admin@studentapp.com"
-puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
+puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
 
 puts ""
 puts "Teachers:"
 teachers.each do |teacher|
   puts "Email    : #{teacher.email} (Name: #{teacher.name})"
 end
-puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
+puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
 
 puts ""
 puts "Students Sample Login:"
 sample_student = Student.first
 if sample_student
   puts "Email    : #{sample_student.email} (Name: #{sample_student.name})"
-  puts "Password : #{AppConstants::DEFAULT_PASSWORD}"
+  puts "Password : #{AppConstants::STUDENT_DEFAULT_PASSWORD}"
 end
 puts "===================================="

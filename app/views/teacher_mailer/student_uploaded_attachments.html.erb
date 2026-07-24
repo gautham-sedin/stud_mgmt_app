@@ -1,0 +1,35 @@
+<h2>
+  Student Uploaded Attachments
+</h2>
+
+<p>
+  Hello <%= @teacher.name %>,
+</p>
+
+<p>
+  Your student has uploaded new attachments.
+</p>
+
+<p>
+  <strong>Student:</strong>
+  <%= @student.name %>
+</p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @student.course %>
+</p>
+
+<p>
+    Documents uploaded:
+    <%= pluralize(@student.documents.size, "document") %>
+</p>
+
+<p>
+  Please log in to review the uploaded documents.
+</p>
+
+<p>
+  Regards,<br>
+  SedStudents Team
+</p>

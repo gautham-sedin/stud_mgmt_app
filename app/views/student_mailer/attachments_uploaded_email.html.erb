@@ -1,0 +1,27 @@
+<h2>
+  Attachments Uploaded Successfully
+</h2>
+
+<p>
+  Hello <%= @student.name %>,
+</p>
+
+<p>
+  Your attachments have been uploaded successfully.
+</p>
+
+<p>
+    Documents uploaded:
+    <%= pluralize(@student.documents.size, "document") %>
+</p>
+
+<p>
+  They are now available in your Student Document Center. Thank you.
+</p>
+
+<br>
+
+<p>
+  Regards,<br>
+  SedStudents Team
+</p>

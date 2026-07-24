@@ -61,8 +61,21 @@ class Api::V1::Teachers::StudentsController < ApiController
   end
 
   def require_admin_or_self!
-    unless current_api_user.admin? || current_api_user.id == params[:teacher_id].to_i
-      render json: { errors: [ "Access denied. You can only view your own students." ] }, status: :forbidden
-    end
+    return if current_api_user.admin?
+
+    teacher_id = Integer(params[:teacher_id])
+
+    return if current_api_user.id == teacher_id
+
+    render json: {
+      errors: [
+        "Access denied. You can only view your own students."
+      ]
+    }, status: :forbidden
+
+  rescue ArgumentError, TypeError
+    render json: {
+      errors: [ "Invalid teacher id." ]
+    }, status: :bad_request
   end
 end
