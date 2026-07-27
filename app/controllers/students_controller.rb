@@ -88,7 +88,10 @@ class StudentsController < ApplicationController
 
         format.turbo_stream do
           if page_form?
-            render :new, formats: [ :html ], status: :unprocessable_entity
+            render turbo_stream: turbo_stream.replace(
+              "student_form_card",
+              partial: "students/form"
+            ), status: :unprocessable_entity
           else
             render turbo_stream: turbo_stream.replace(
               "quick_student_form",
@@ -152,7 +155,10 @@ class StudentsController < ApplicationController
 
         format.turbo_stream do
           if page_form?
-            render :edit, formats: [ :html ], status: :unprocessable_entity
+            render turbo_stream: turbo_stream.replace(
+              "student_form_card",
+              partial: "students/form"
+            ), status: :unprocessable_entity
           else
             render turbo_stream: turbo_stream.replace(
               "quick_student_form",

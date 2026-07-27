@@ -415,15 +415,26 @@ RSpec.describe "Student Management", type: :request do
           .to redirect_to(student_path(Student.last))
       end
 
-      it "re-renders the form with a 422 and shows errors on invalid input" do
+      it "replaces the form card in place with a 422 and shows errors on invalid input" do
         post students_path,
              params: valid_params.deep_merge(student: { marks: 150, name: "Bad2Name" }),
              headers: headers
 
         expect(response).to have_http_status(:unprocessable_content)
 
+        # Must be an in-place Turbo Stream replace of the form card, NOT a full
+        # HTML document (which Turbo would append below the page).
+        expect(response.media_type)
+          .to eq(Mime[:turbo_stream].to_s)
+
         expect(response.body)
           .to include("Please fix the following errors")
+
+        expect(response.body)
+          .to include('target="student_form_card"')
+
+        expect(response.body)
+          .not_to include("<html")
       end
     end
 
