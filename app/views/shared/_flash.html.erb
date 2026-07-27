@@ -1,5 +1,6 @@
 <% flash.each do |type, message| %>
-    <div class="alert alert-<%= flash_bootstrap_class(type) %> alert-dismissible fade show shadow-sm" role="alert">
+    <% next if message.blank? %>
+    <div class="alert alert-<%= flash_bootstrap_class(type) %> alert-dismissible fade show shadow-sm" role="alert" data-turbo-temporary>
         <%= message %>
 
         <button

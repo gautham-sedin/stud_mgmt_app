@@ -373,4 +373,78 @@ RSpec.describe "Student Management", type: :request do
       end
     end
   end
+
+  # The full-page form (new/edit/show views) submits through Turbo, so the
+  # request carries the Turbo Stream Accept header. The `page_form` flag tells
+  # the controller to fall back to standard HTML redirects / error rendering
+  # instead of the inline quick-form Turbo Stream behaviour.
+  describe "Full-page form submissions (Turbo + page_form)" do
+    before do
+      sign_in(teacher)
+    end
+
+    let(:headers) do
+      {
+        "ACCEPT" => "text/vnd.turbo-stream.html"
+      }
+    end
+
+    let!(:student) do
+      create(:student, user: teacher)
+    end
+
+    let(:valid_params) do
+      {
+        page_form: "1",
+        student: {
+          name: "Page Form Student",
+          email: "pageform@example.com",
+          age: 22,
+          city: "Chennai",
+          course: "Rails",
+          marks: 88
+        }
+      }
+    end
+
+    describe "POST /students" do
+      it "redirects to the created student's profile" do
+        post students_path, params: valid_params, headers: headers
+
+        expect(response)
+          .to redirect_to(student_path(Student.last))
+      end
+
+      it "re-renders the form with a 422 and shows errors on invalid input" do
+        post students_path,
+             params: valid_params.deep_merge(student: { marks: 150, name: "Bad2Name" }),
+             headers: headers
+
+        expect(response).to have_http_status(:unprocessable_content)
+
+        expect(response.body)
+          .to include("Please fix the following errors")
+      end
+    end
+
+    describe "PATCH /students/:id" do
+      it "redirects to the student's profile" do
+        patch student_path(student),
+              params: { page_form: "1", student: { city: "Bangalore" } },
+              headers: headers
+
+        expect(response)
+          .to redirect_to(student_path(student))
+      end
+    end
+
+    describe "DELETE /students/:id" do
+      it "redirects to the students index" do
+        delete student_path(student, page_form: "1"), headers: headers
+
+        expect(response)
+          .to redirect_to(students_path)
+      end
+    end
+  end
 end

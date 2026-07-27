@@ -3,7 +3,7 @@ FactoryBot.define do
     association :user, factory: [ :user, :teacher ]
 
     sequence(:name) do |n|
-      "Student #{n}"
+      "Student #{('A'..'Z').to_a[n % 26]}"
     end
 
     sequence(:email) do |n|

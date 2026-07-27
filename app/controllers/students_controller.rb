@@ -75,7 +75,11 @@ class StudentsController < ApplicationController
         end
 
         format.turbo_stream do
-          flash.now[:notice] = "Student created successfully."
+          if page_form?
+            redirect_to @student, notice: "Student created successfully."
+          else
+            flash.now[:notice] = "Student created successfully."
+          end
         end
       else
         format.html do
@@ -83,11 +87,15 @@ class StudentsController < ApplicationController
         end
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "quick_student_form",
-            partial: "students/quick_form",
-            locals: { student: @student }
-          ), status: :unprocessable_entity
+          if page_form?
+            render :new, formats: [ :html ], status: :unprocessable_entity
+          else
+            render turbo_stream: turbo_stream.replace(
+              "quick_student_form",
+              partial: "students/quick_form",
+              locals: { student: @student }
+            ), status: :unprocessable_entity
+          end
         end
       end
     end
@@ -128,7 +136,11 @@ class StudentsController < ApplicationController
         end
 
         format.turbo_stream do
-          flash.now[:notice] = "Student updated successfully."
+          if page_form?
+            redirect_to @student, notice: "Student updated successfully."
+          else
+            flash.now[:notice] = "Student updated successfully."
+          end
         end
 
       else
@@ -139,13 +151,17 @@ class StudentsController < ApplicationController
         end
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "quick_student_form",
-            partial: "students/quick_form",
-            locals: {
-              student: @student
-            }
-          ), status: :unprocessable_entity
+          if page_form?
+            render :edit, formats: [ :html ], status: :unprocessable_entity
+          else
+            render turbo_stream: turbo_stream.replace(
+              "quick_student_form",
+              partial: "students/quick_form",
+              locals: {
+                student: @student
+              }
+            ), status: :unprocessable_entity
+          end
         end
 
       end
@@ -171,7 +187,11 @@ class StudentsController < ApplicationController
       end
 
       format.turbo_stream do
-        flash.now[:notice] = "Student deleted successfully."
+        if page_form?
+          redirect_to students_path, notice: "Student deleted successfully."
+        else
+          flash.now[:notice] = "Student deleted successfully."
+        end
       end
     end
   end
@@ -233,6 +253,14 @@ class StudentsController < ApplicationController
 
   # Private methods
   private
+
+  # True when the request originates from the full-page student form
+  # (new/edit views) rather than the inline quick form on the index page.
+  # Full-page submissions get standard HTML redirects; the quick form keeps
+  # its in-place Turbo Stream updates.
+  def page_form?
+    params[:page_form].present?
+  end
 
   def set_student
     if current_user.student? && action_name.in?(%w[generate_report download_report])

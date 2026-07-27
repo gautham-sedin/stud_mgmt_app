@@ -5,7 +5,11 @@
       "Bash(docker info *)",
       "Bash(ruby -v)",
       "Bash(wsl.exe -d Ubuntu -- bash -lc \"cd /home/gautham/Sedin/Training/stud_mgmt_app && pwd && docker --version\")",
-      "Bash(wsl.exe -d Ubuntu -- bash -lc \"cd /home/gautham/Sedin/Training/stud_mgmt_app && docker run --rm -v \\\\\"\\\\$\\(pwd\\)\\\\\":/app -w /app ruby:3.4.6-slim bash -c 'apt-get update -qq && apt-get install -y --no-install-recommends build-essential libpq-dev git > /dev/null 2>&1 && bundle lock 2>&1'\")"
+      "Bash(wsl.exe -d Ubuntu -- bash -lc \"cd /home/gautham/Sedin/Training/stud_mgmt_app && docker run --rm -v \\\\\"\\\\$\\(pwd\\)\\\\\":/app -w /app ruby:3.4.6-slim bash -c 'apt-get update -qq && apt-get install -y --no-install-recommends build-essential libpq-dev git > /dev/null 2>&1 && bundle lock 2>&1'\")",
+      "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\Ubuntu\\\\\\\\home\\\\\\\\gautham\\\\\\\\Sedin\\\\\\\\Training\\\\\\\\stud_mgmt_app\" 2>/dev/null; ls -la; echo \"---ROUTES---\"; cat config/routes.rb)",
+      "Read(///wsl.localhost/Ubuntu/home/gautham/Sedin/Training/**)",
+      "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\Ubuntu\\\\\\\\home\\\\\\\\gautham\\\\\\\\Sedin\\\\\\\\Training\\\\\\\\stud_mgmt_app\" 2>/dev/null; grep -i \"faker\" Gemfile; echo \"---name assertions in specs---\"; grep -rn \"Student [0-9]\\\\|name.*eq\\\\|\\\\.name\\)\" spec/ | grep -i name | head -40)",
+      "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\Ubuntu\\\\\\\\home\\\\\\\\gautham\\\\\\\\Sedin\\\\\\\\Training\\\\\\\\stud_mgmt_app\" 2>/dev/null; echo \"=== flash/unauthenticated assertions ===\"; grep -rn \"sign in or sign up\\\\|unauthenticated\\\\|You need to sign\\\\|new_user_session\\\\|flash\\\\[:alert\\\\]\" spec/ | head -30; echo \"=== single-char TLD emails ===\"; grep -rn \"@[a-z]*\\\\.[a-z]\\\\b\" spec/ app/ | grep -v \"\\\\.com\\\\|\\\\.org\\\\|\\\\.net\\\\|\\\\.edu\\\\|\\\\.co\\\\.\" | head; echo \"=== name with digits in specs ===\"; grep -rn \"name:.*[0-9]\" spec/ | head)"
     ]
   }
 }

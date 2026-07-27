@@ -55,13 +55,22 @@ class Student < ApplicationRecord
     end
   }
 
-  validates :name, presence: true
+  NAME_FORMAT = /\A[a-zA-Z][a-zA-Z\s.'\-]*\z/
+  EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]{2,}\z/i
+
+  validates :name,
+    presence: true,
+    format: {
+      with: NAME_FORMAT,
+      message: "can only contain letters, spaces, and the characters . ' -"
+    }
 
   validates :email,
     presence: true,
     uniqueness: true,
     format: {
-      with: URI::MailTo::EMAIL_REGEXP
+      with: EMAIL_FORMAT,
+      message: "must be a valid email address (e.g. name@example.com)"
     }
 
   validates :age,

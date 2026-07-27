@@ -44,6 +44,31 @@ RSpec.describe Student, type: :model do
         .for(:email)
     end
 
+    it "rejects an email with a single-character TLD" do
+      should_not allow_value("student@example.c")
+        .for(:email)
+    end
+
+    it "accepts an email with a valid multi-character TLD" do
+      should allow_value("student@example.com")
+        .for(:email)
+    end
+
+    it "rejects a name containing numbers" do
+      should_not allow_value("Student123")
+        .for(:name)
+    end
+
+    it "rejects a name containing symbols" do
+      should_not allow_value("Student@#")
+        .for(:name)
+    end
+
+    it "accepts a name with letters, spaces, apostrophes and hyphens" do
+      should allow_value("Jean-Luc O'Brien")
+        .for(:name)
+    end
+
     it { should validate_presence_of(:age) }
 
     it do
