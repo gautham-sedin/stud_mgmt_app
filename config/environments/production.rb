@@ -49,14 +49,21 @@ Rails.application.configure do
   # Use Sidekiq for background jobs when Redis is available (e.g. REDIS_URL set),
   # otherwise fall back to Rails' in-process :async adapter so the app still boots
   # and runs jobs on a standalone Rails+Postgres deployment (no Redis/Sidekiq yet).
-  config.active_job.queue_adapter = ENV["REDIS_URL"].present? ? :sidekiq : :async
+  config.active_job.queue_adapter = :sidekiq
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch("APP_HOST", "localhost"),
+    protocol: ENV.fetch("APP_PROTOCOL", "https")
+  }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {

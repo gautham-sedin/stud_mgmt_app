@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: Rails.application.credentials.dig(:gmail, :username) || "noreply@sedstudents.com"
+  default from: ENV.fetch("MAILER_FROM_ADDRESS", "onboarding@resend.dev")
   layout "mailer"
 end

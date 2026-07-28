@@ -50,6 +50,10 @@ services:
       RAILS_ASSUME_SSL: "false"
       RAILS_FORCE_SSL: "false"
       DATABASE_URL: postgresql://postgres:password@db:5432/student_management_production
+      APP_HOST: localhost:3001
+      APP_PROTOCOL: http
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAILER_FROM_ADDRESS: ${MAILER_FROM_ADDRESS:-onboarding@resend.dev}
     volumes:
       - rails_storage:/rails/storage
     depends_on:
@@ -79,6 +83,10 @@ services:
       REDIS_URL: redis://redis:6379
       RAILS_LOG_TO_STDOUT: "true"
       DATABASE_URL: postgresql://postgres:password@db:5432/student_management_production
+      APP_HOST: localhost:3001
+      APP_PROTOCOL: http
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAILER_FROM_ADDRESS: ${MAILER_FROM_ADDRESS:-onboarding@resend.dev}
     volumes:
       - rails_storage:/rails/storage
     depends_on:

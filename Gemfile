@@ -79,3 +79,5 @@ gem "prawn"
 gem "sidekiq"
 
 gem "pagy", "~> 9.3"
+
+gem "resend"
