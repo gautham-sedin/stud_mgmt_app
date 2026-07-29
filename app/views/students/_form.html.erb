@@ -175,7 +175,9 @@
           <div class="col-md-4 mb-3">
             <div class="card h-100 shadow-sm border-0">
               
-              <% if @student.profile_photo.attached? %>
+              <% profile_attachment = @student.profile_photo.attachment %>
+
+              <% if profile_attachment&.persisted? %>
               <div class="card-body d-flex flex-column justify-content-between">
 
                 <%= image_tag @student.profile_photo,
@@ -219,7 +221,7 @@
             <div class="card-body">
               <h5 class="fw-semibold mb-3">
                 Documents
-                (<%= @student.documents.count %>)
+                (<%= @student.documents.attachments.count(&:persisted?) %>)
               </h5>
 
               <%= form.file_field :documents,
@@ -232,9 +234,11 @@
             </div>
           </div>
 
-          <% if @student.documents.attached? %>
 
-            <% @student.documents.each do |document| %>
+          <% persisted_documents = @student.documents.attachments.select(&:persisted?) %>
+
+          <% if persisted_documents.any? %>
+            <% persisted_documents.each do |document| %>
 
               <div class="col-md-4 mb-3">
                 <div class="card h-100 shadow-sm border-0">
